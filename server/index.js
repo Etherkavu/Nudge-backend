@@ -23,6 +23,8 @@ app.set("view engine", "jsx");
 app.engine('jsx', require('express-react-views').createEngine());
 app.use(bodyParser.urlencoded({extended: true}));
 
+console.log(`PROCESS ENV DATABASE_URL: ${process.env.DATABASE_URL}`);
+
 var myVar = setInterval(checkInCheck, 5000);
 
 var activeusers = {
