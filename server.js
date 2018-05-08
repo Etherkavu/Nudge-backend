@@ -163,6 +163,7 @@ app.get("https://nameless-brook-17350.herokuapp.com/ping", (req, res) => {
 
 
 app.get("/", (req, res) => {
+  res.send("{message: SERVER RECEIVED RESPONSE!}");
  });
 
 // app.get("/login", (req, res) => {
