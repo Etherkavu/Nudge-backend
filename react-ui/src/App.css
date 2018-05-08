@@ -4,8 +4,8 @@
   font-family: Helvetica, sans-serif;
   top: 0;
   left: 0;
-  background: url('./red-phone.jpg') no-repeat fixed;
-  background-size: cover;
+  /*background: url('./red-phone.jpg') no-repeat fixed;
+  background-size: cover;*/
 }
 
 .App-logo {
