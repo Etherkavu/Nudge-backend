@@ -147,12 +147,16 @@ function sendEmail(email){
   });
 };
 
-app.get("/ping", (req, res) => {
+var corsOptions = {
+  origin: 'http://nudge-client-app.herokuapp.com',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+
+app.get("/ping", cors(corsOptions), (req, res) => {
   console.log("Hey look we made it here");
   activeusers['moo@moo.moo'] = {count: 0};
   res.send(200);
 });
-
 
 app.get("/login/:id", (req, res) => {
   activeusers[req.params.id] = {count : 0}
@@ -165,7 +169,7 @@ app.get("/logout/:id", (req, res) => {
 });
 
 app.post("/update/:id", (req, res) => {
-  addContact(req.params.id, req.body.email, req.body.name);
+  addContact(req.params.id, bkavuh@gmail.com, jeff);
   res.send(200);
 });
 
