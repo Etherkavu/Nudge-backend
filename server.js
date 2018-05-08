@@ -158,23 +158,19 @@ function sendEmail(email){
 app.get("/ping", (req, res) => {
   console.log("Hey look we made it here");
   activeusers['moo@moo.moo'] = {count: 0};
-  res.send("{message: SERVER RECEIVED RESPONSE!}");
+  res.send(200);
 });
 
 
-app.get("/", (req, res) => {
-  res.send("Hello there.");
- });
+app.get("/login/:id", (req, res) => {
+  activeusers[req.params.id] = {count : 0}
+  res.redirect("http://localhost:5000");
+});
 
-// app.get("/login", (req, res) => {
-//   activeusers[req.params.id] = {count : 0}
-//   res.redirect("http://localhost:5000");
-// });
-
-// app.get("/logout", (req, res) => {
-//   delete activeusers[req.params.id];
-//   res.redirect("http://localhost:5000");
-// });
+app.get("/logout/:id", (req, res) => {
+  delete activeusers[req.params.id];
+  res.redirect("http://localhost:5000");
+});
 
 // app.post("/update/:id", (req, res) => {
 //   addContact(req.params.id, req.body.email, req.body.name);
