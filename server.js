@@ -80,16 +80,9 @@ function checkInCheck() {
           emails.push(result.rows[i].email);
         }
 
-
-
-
-
-
-
-
-      // for (var i = 0; i < emails.length; i++){
-      //  sendEmail(emails[i]);
-      // }
+        for (var i = 0; i < emails.length; i++){
+          sendEmail(emails[i]);
+        }
       });
       });
      });
@@ -99,7 +92,6 @@ function checkInCheck() {
   };
 }
 
-//NOT TESTED
 function addContact(user, email, name){
 var owner;
 var contact;
@@ -164,18 +156,31 @@ app.get("/ping", (req, res) => {
 
 app.get("/login/:id", (req, res) => {
   activeusers[req.params.id] = {count : 0}
-  res.redirect("http://localhost:5000");
+  res.send(200);
 });
 
 app.get("/logout/:id", (req, res) => {
   delete activeusers[req.params.id];
-  res.redirect("http://localhost:5000");
+  res.send(200);
 });
 
-// app.post("/update/:id", (req, res) => {
-//   addContact(req.params.id, req.body.email, req.body.name);
-//   res.redirect("http://localhost:8080");
-// });
+app.post("/update/:id", (req, res) => {
+  addContact(req.params.id, req.body.email, req.body.name);
+  res.send(200);
+});
+
+app.post("/register", (req, res) => {
+  register(req.body.first_name, req.body.last_name,
+    req.body.email, req.body.password, req.body.contact_name
+    req.body.contact_email
+  );
+  res.send(200);
+});
+
+app.post("/update/:id", (req, res) => {
+  updateContact(req.params.id, req.body.email, req.body.name);
+  res.send(200);
+});
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
