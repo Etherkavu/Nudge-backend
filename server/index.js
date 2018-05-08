@@ -163,6 +163,7 @@ app.get("https://nameless-brook-17350.herokuapp.com/ping", (req, res) => {
 
 
 app.get("/", (req, res) => {
+  res.send("HELLO YES THIS IS DOG");
  });
 
 // app.get("/login", (req, res) => {
