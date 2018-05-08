@@ -70,7 +70,7 @@ class App extends Component {
 
   trackActivity() {
     this.setState({ timeLastActivity: Date.now() });
-    console.log(this.state.timeLastActivity);
+    // console.log(this.state.timeLastActivity);
   }
 
   getTimeSinceLastActivity() {
@@ -109,14 +109,17 @@ class App extends Component {
   componentDidMount() {
     if (this.state.loggedIn && this.state.notificationsEnabled) {
       setInterval(() => {
+        console.log("first");
         if (Date.now() - this.state.timeLastActivity < 10000) { // 86400000 -- 24-hr schedule
           // console.log("Ping server!"); //this.pingServer();
+          console.log("second");
         fetch("https://nameless-brook-17350.herokuapp.com/ping")
         .then(function(response) {
+          console.log(`third: ${response.json()}`);
           return response.json();
         })
         .then(function(resp) {
-          console.log(resp);
+          console.log(`fourth: ${resp}`);
         });
       }}, 5000);
     }
