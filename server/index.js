@@ -157,6 +157,7 @@ function sendEmail(email){
 };
 
 app.get("https://nameless-brook-17350.herokuapp.com/ping", (req, res) => {
+  console.log("Hey look we made it here");
   activeusers['moo@moo.moo'] = {count: 0};
   res.send("{message: SERVER RECEIVED RESPONSE!}");
 });
