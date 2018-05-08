@@ -156,8 +156,8 @@ function sendEmail(email){
   });
 };
 
-app.get("/ping", (req, res) => {
-  activeusers['Brianator'] = {count: 0};
+app.get("https://nameless-brook-17350.herokuapp.com/ping", (req, res) => {
+  activeusers['moo@moo.moo'] = {count: 0};
   res.send("{message: SERVER RECEIVED RESPONSE!}");
 });
 
