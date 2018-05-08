@@ -111,7 +111,7 @@ class App extends Component {
       setInterval(() => {
         if (Date.now() - this.state.timeLastActivity < 10000) { // 86400000 -- 24-hr schedule
           // console.log("Ping server!"); //this.pingServer();
-        fetch(`/ping`)
+        fetch("https://nameless-brook-17350.herokuapp.com/ping")
         .then(function(response) {
           return response.json();
         })
