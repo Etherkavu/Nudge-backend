@@ -62,7 +62,7 @@ function checkInCheck() {
     if (err) {
       return console.error("error running query", err);
     }
-    console.log(`HHEEEEELLLOOO!: ${result.rows}`);
+    console.log(`HHEEEEELLLOOO!: ${result}`);
     client.query("SELECT contact_id FROM contacts WHERE owner_id = (" + result.rows[0].id + ")", (err, result) => {
       if (err) {
         return console.error("error running query", err);
