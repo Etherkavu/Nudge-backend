@@ -107,6 +107,7 @@ class App extends Component {
   // function to check if user logged in (for conditionals)
 
   componentDidMount() {
+        console.log("zero");
     if (this.state.loggedIn && this.state.notificationsEnabled) {
       setInterval(() => {
         console.log("first");
