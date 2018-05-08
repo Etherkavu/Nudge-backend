@@ -28,7 +28,7 @@ console.log(`PROCESS ENV DATABASE_URL: ${process.env.DATABASE_URL}`);
 var myVar = setInterval(checkInCheck, 5000);
 
 var activeusers = {
-  'moo@moo.moo': {count: 0
+  'moo@moo.moo': {count: 5
   }
 };
 
