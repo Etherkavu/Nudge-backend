@@ -80,9 +80,9 @@ function checkInCheck() {
           emails.push(result.rows[i].email);
         }
 
-        for (var i = 0; i < emails.length; i++){
-          sendEmail(emails[i]);
-        }
+        // for (var i = 0; i < emails.length; i++){
+        //   sendEmail(emails[i]);
+        // }
       });
       });
      });
@@ -170,10 +170,7 @@ app.post("/update/:id", (req, res) => {
 });
 
 app.post("/register", (req, res) => {
-  register(req.body.first_name, req.body.last_name,
-    req.body.email, req.body.password, req.body.contact_name
-    req.body.contact_email
-  );
+  register(req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.contact_name, req.body.contact_email);
   res.send(200);
 });
 
