@@ -1,7 +1,6 @@
 var express = require("express");
-const settings = require("../settings");
 var app = express();
-const pg = require('pg');
+const { Client } = require('pg');
 var express = require('express')(),
     mailer = require('express-mailer');
 var PORT = process.env.PORT || 5000; // default port 3000
@@ -9,17 +8,10 @@ const bodyParser = require("body-parser");
 // bcrypt
 // cookie-session
 
-function clientBuilder (source){
-  const client = new pg.Client({
+const client = new Client({
   connectionString: process.env.DATABASE_URL,
   ssl: true
-  });
-  return client;
-}
-
-const client = clientBuilder(settings);
-
-
+});
 
 client.connect((err) => {
   if (err) {
