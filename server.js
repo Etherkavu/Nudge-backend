@@ -1,5 +1,6 @@
 var express = require("express");
 var app = express();
+var cors = require('cors')
 const { Client } = require('pg');
 var express = require('express')(),
     mailer = require('express-mailer');
