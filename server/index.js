@@ -161,11 +161,9 @@ app.get("https://nameless-brook-17350.herokuapp.com/ping", (req, res) => {
   res.send("{message: SERVER RECEIVED RESPONSE!}");
 });
 
-// make "/users/:id"
-// app.get("/:id", (req, res) => {
-//   activeusers[req.params.id].count = 0;
-//   res.redirect("http://localhost:5000");
-// });
+
+app.get("/", (req, res) => {
+ });
 
 // app.get("/login", (req, res) => {
 //   activeusers[req.params.id] = {count : 0}
