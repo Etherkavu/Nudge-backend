@@ -163,7 +163,7 @@ app.get("/ping", (req, res) => {
 
 
 app.get("/", (req, res) => {
-  res.send("HELLO, YES, THIS IS DOG");
+  res.render('public/index');
  });
 
 // app.get("/login", (req, res) => {
