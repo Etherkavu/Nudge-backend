@@ -1,30 +1,43 @@
-const express = require('express');
-const app = express();
-const path = require('path');
-const cluster = require('cluster');
-const numCPUs = require('os').cpus().length;
-      mailer = require('express-mailer');
+var express = require("express");
+const settings = require("../settings");
+var app = express();
+const pg = require('pg');
+var express = require('express')(),
+    mailer = require('express-mailer');
+var PORT = process.env.PORT || 5000; // default port 3000
+const bodyParser = require("body-parser");
+// bcrypt
+// cookie-session
 
-const PORT = process.env.PORT || 5000;
+function clientBuilder (source){
+  const client = new pg.Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: true
+  });
+  return client;
+}
 
-// const bodyParser = require("body-parser");
+const client = clientBuilder(settings);
 
-// app.use(bodyParser.urlencoded({extended: true}));
 
-let myVar = setInterval(checkInCheck, 5000);
 
-const activeusers = {
-  'test': {
-    name: 'test',
-    count: 0
-  },
-  'xxjeffxx': {
-    name: 'xxjeffxx',
-    count: 0
-  // },
-  // 'Brianator': {count: 0
+client.connect((err) => {
+  if (err) {
+    return console.error("Connection Error", err);
+  }
+});
+
+app.set("view engine", "jsx");
+app.engine('jsx', require('express-react-views').createEngine());
+app.use(bodyParser.urlencoded({extended: true}));
+
+var myVar = setInterval(checkInCheck, 5000);
+
+var activeusers = {
+  'xxjeffxx': {count: 0
   }
 };
+
 
 mailer.extend(app, {
   from: 'no-reply@example.com',
@@ -41,16 +54,96 @@ mailer.extend(app, {
 // For each user connected to the app, keeps counter.
 // Once counter reaches 10, it sends an automated email to the user's contact.
 function checkInCheck() {
+  var emails = [];
+  var contactList = '';
   for (var user in activeusers){
-    activeusers[user].count += 1; //can simplify to user.count
+    activeusers[user].count += 1;
     console.log("test up", user, activeusers[user].count);
     if (activeusers[user].count > 10){
-      console.log(`EMAIL SENT! ${user}`);
-      activeusers[user].count = 0;
-      // sendEmail('nudge.project.head@gmail.com');
-      // activeusers[user].count = 0;
+
+
+
+
+ client.query("SELECT id FROM users WHERE email LIKE '%" + user + "%'", (err, result) => {
+    if (err) {
+      return console.error("error running query", err);
+    }
+
+    client.query("SELECT contact_id FROM contacts WHERE owner_id = (" + result.rows[0].id + ")", (err, result) => {
+      if (err) {
+        return console.error("error running query", err);
+      }
+
+      contactList += result.rows[0].contact_id;
+      for (var i = 1; i < result.rows.length; i++){
+        contactList += ", " + (result.rows[i].contact_id);
+      }
+
+      client.query("SELECT email FROM users WHERE id IN (" + contactList + ")", (err, result) => {
+        if (err) {
+          return console.error("error running query", err);
+        }
+        for (var i = 0; i < result.rows.length; i++){
+          emails.push(result.rows[i].email);
+        }
+
+
+
+
+
+
+
+
+      // for (var i = 0; i < emails.length; i++){
+      //  sendEmail(emails[i]);
+      // }
+      });
+      });
+     });
+ console.log('EMAIL SENT!');
+ activeusers[user].count = 0;
     }
   };
+}
+
+//NOT TESTED
+function addContact(user, email, name){
+var owner;
+var contact;
+  client.query("SELECT EXISTS (SELECT 1 FROM user WHERE email LIKE '%"+ email+"%'", (err, result) => {
+    if (err) {
+      return console.error("error running query", err);
+    }
+    if (result.rows[0] == 'f'){
+      client.query("INSERT INTO users (email) VALUES (" + email + ")", (err, result) => {
+        if (err) {
+          return console.error("error inserting query", err);
+        }
+      });
+    }
+  });
+
+  client.query("SELECT id FROM users WHERE email LIKE '%" + email + "%'", (err, result) => {
+    if (err) {
+      return console.error("error running query", err);
+    }
+    contact = result.rows[0].id;
+    client.query("SELECT id FROM users WHERE email LIKE '%" + user + "%'", (err, result) => {
+      if (err) {
+        return console.error("error running query", err);
+      }
+      owner = result.rows[0].id;
+      client.query("INSERT INTO contacts (owner_id, contact_id, nickname) VALUES (" + owner + ", " + contact + ", " + name + ")", (err, result) => {
+        if (err) {
+          return console.error("error inserting query", err);
+        }
+      });
+    });
+  });
+}
+
+function temp1(){
+
 }
 
 function sendEmail(email){
@@ -69,53 +162,32 @@ function sendEmail(email){
   });
 };
 
-// Multi-process to utilize all CPU cores.
-// if (cluster.isMaster) {
-//   console.error(`Node cluster master ${process.pid} is running`);
+app.get("/ping", (req, res) => {
+  activeusers['Brianator'] = {count: 0};
+  res.send("{message: SERVER RECEIVED RESPONSE!}");
+});
 
-//   // Fork workers.
-//   for (let i = 0; i < numCPUs; i++) {
-//     cluster.fork();
-//   }
+// make "/users/:id"
+// app.get("/:id", (req, res) => {
+//   activeusers[req.params.id].count = 0;
+//   res.redirect("http://localhost:5000");
+// });
 
-//   cluster.on('exit', (worker, code, signal) => {
-//     console.error(`Node cluster worker ${worker.process.pid} exited: code ${code}, signal ${signal}`);
-//   });
-
-// } else {
-  // const app = express();
-
-  // Priority serve any static files.
-  app.use(express.static(path.resolve(__dirname, '../react-ui/build')));
-
-  // Answer API requests.
-  app.get('/api', function (req, res) {
-    res.set('Content-Type', 'application/json');
-    res.send('{"message":"Hello from the custom server!"}');
-  });
-
-  // All remaining requests return the React app, so it can handle routing.
-  // app.get('*', function(request, response) {
-  //   response.sendFile(path.resolve(__dirname, '../react-ui/build', 'index.html'));
-  // });
-
-  app.get("/:id", (req, res) => {
-    res.render("../react-ui/build/index.html");
-    activeusers[req.params.id].count = 0;
-    res.redirect("http://localhost:5000");
-  });
-
-// app.get("/login/:id", (req, res) => {
+// app.get("/login", (req, res) => {
 //   activeusers[req.params.id] = {count : 0}
-//   res.redirect("http://localhost:8080");
+//   res.redirect("http://localhost:5000");
 // });
 
-// app.get("/logout/:id", (req, res) => {
+// app.get("/logout", (req, res) => {
 //   delete activeusers[req.params.id];
+//   res.redirect("http://localhost:5000");
+// });
+
+// app.post("/update/:id", (req, res) => {
+//   addContact(req.params.id, req.body.email, req.body.name);
 //   res.redirect("http://localhost:8080");
 // });
 
-  app.listen(PORT, function () {
-    console.error(`Node cluster worker ${process.pid}: listening on port ${PORT}`);
-  });
-// }
+app.listen(PORT, () => {
+  console.log(`Example app listening on port ${PORT}!`);
+});
