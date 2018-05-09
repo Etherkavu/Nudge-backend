@@ -159,27 +159,27 @@ app.get("/ping", cors(corsOptions), (req, res) => {
   res.send(200);
 });
 
-app.get("/login/:id", (req, res) => {
+app.get("/login/:id", cors(corsOptions), (req, res) => {
   activeusers[req.params.id] = {count : 0}
   res.send(200);
 });
 
-app.get("/logout/:id", (req, res) => {
+app.get("/logout/:id", cors(corsOptions), (req, res) => {
   delete activeusers[req.params.id];
   res.send(200);
 });
 
-app.post("/update/:id", (req, res) => {
+app.get("/update/:id", cors(corsOptions), (req, res) => {
   addContact(req.params.id, 'bkavuh@gmail.com', jeff);
   res.send(200);
 });
 
-app.post("/register", (req, res) => {
+app.get("/register", cors(corsOptions), (req, res) => {
   register(req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.contact_name, req.body.contact_email);
   res.send(200);
 });
 
-app.post("/update/:id", (req, res) => {
+app.get("/update/:id", cors(corsOptions), (req, res) => {
   updateContact(req.params.id, req.body.email, req.body.name);
   res.send(200);
 });
