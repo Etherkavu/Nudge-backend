@@ -131,7 +131,8 @@ function pullContacts(user){
       if (err) {
         return console.error("error running query", err);
       }
-      client.query("SELECT * FROM contacts WHERE owner_id = " + result, (err, result) => {
+      console.log(result.rows);
+      client.query("SELECT * FROM contacts WHERE owner_id = " + result.rows[0].id, (err, result) => {
         if (err) {
           return console.error("error running query", err);
         }
