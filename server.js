@@ -170,7 +170,7 @@ app.get("/logout/:id", cors(corsOptions), (req, res) => {
 });
 
 app.get("/update/:id", cors(corsOptions), (req, res) => {
-  addContact(req.params.id, 'bkavuh@gmail.com', jeff);
+  addContact(req.params.id, 'bkavuh@gmail.com', 'jeff');
   res.send(200);
 });
 
