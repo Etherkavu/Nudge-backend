@@ -208,8 +208,8 @@ app.get("/logout", cors(corsOptions), (req, res) => {
 });
 
 app.get("/contacts", cors(corsOptions), (req, res) => {
-  const list = await pullContacts('moo@moo.moo');
-  console.log(list);
+
+  console.log(pullContacts('moo@moo.moo'));
 });
 
 app.get("/insert", cors(corsOptions), (req, res) => {
