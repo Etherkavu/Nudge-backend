@@ -109,7 +109,6 @@ console.log("hi!");
         }
       });
     }
-  console.log("HELLO!@E!WE @E! ", result);
   });
 
   client.query("SELECT id FROM users WHERE email LIKE '%" + email + "%'", (err, result) => {
