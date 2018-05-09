@@ -96,7 +96,7 @@ function checkInCheck() {
 function addContact(user, add, name){
 var owner;
 var contact;
-console.log(add);
+console.log("add:", add);
   client.query("SELECT EXISTS (SELECT 1 FROM users WHERE email LIKE '%"+ add +"%')", (err, result) => {
     if (err) {
       return console.error("error running query", err);
