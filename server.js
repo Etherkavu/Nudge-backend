@@ -127,7 +127,7 @@ var contact;
   });
 }
 async function pullContacts(user){
-  var results = 'WEEEEEE';
+  var results = '';
   var namelist = [];
   var idlist = ''
   client.query("SELECT id FROM users WHERE email LIKE '%" + user + "%'", (err, result) => {
@@ -208,8 +208,47 @@ app.get("/logout", cors(corsOptions), (req, res) => {
 });
 
 app.get("/contacts", cors(corsOptions), (req, res) => {
+  var results = '';
+  var namelist = [];
+  var idlist = ''
+  client.query("SELECT id FROM users WHERE email LIKE '%" + user + "%'", (err, result) => {
+    if (err) {
+      return console.error("error running query", err);
+    }
+    client.query("SELECT * FROM contacts WHERE owner_id = " + result.rows[0].id, (err, result) => {
+      if (err) {
+        return console.error("error running query", err);
+      }
+      for(var i = 0; i < result.rows.length; i ++){
+        if(i===0){
+          idlist += result.rows[i].contact_id;
+        }else{
+        idlist += ', ' + result.rows[i].contact_id;
+        }
+        namelist.push(result.rows[i].nickname);
+      }
 
-  console.log(pullContacts('moo@moo.moo'));
+      client.query("SELECT email FROM users WHERE id IN ("+ idlist +")", (err, result) => {
+        if (err) {
+         return console.error("error running query", err);
+        }
+        results += '{ "users" : ['
+        for (var i = 0; i < result.rows.length; i ++){
+          if(i===0){
+            results += '{ "email":"' + result.rows[0].email + '", "nickname":"' + namelist[i] + '" }'
+          }else{
+            results += ', { "email":"' + result.rows[0].email + '", "nickname": "' + namelist[i] + '" }'
+          }
+
+        }
+        results += " ]}"
+        console.log(results);
+        rres.send(results);
+      });
+    });
+  });
+    console.log(list);
+  });
 });
 
 app.get("/insert", cors(corsOptions), (req, res) => {
