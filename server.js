@@ -208,6 +208,7 @@ app.get("/logout", cors(corsOptions), (req, res) => {
 });
 
 app.get("/contacts", cors(corsOptions), (req, res) => {
+  console.log(req.body.firstParam);
   var user = 'moo@moo.moo'
   var results = '';
   var namelist = [];
