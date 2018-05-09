@@ -101,7 +101,7 @@ console.log("hi!");
     if (err) {
       return console.error("error running query", err);
     }
-    console.log("hai", result[0]);
+    console.log("hai", result);
     if (result.rows[0] == 'f'){
       client.query("INSERT INTO users (email) VALUES (" + email + ")", (err, result) => {
         if (err) {
