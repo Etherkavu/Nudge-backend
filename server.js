@@ -149,7 +149,7 @@ function sendEmail(email){
 };
 
 var corsOptions = {
-  origin: 'http://nudge-client-app.herokuapp.com',
+  origin: 'https://nudge-client-app.herokuapp.com',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
