@@ -108,7 +108,7 @@ var contact;
       });
     }
   });
-  console.log(results);
+  console.log(result);
   client.query("SELECT id FROM users WHERE email LIKE '%" + email + "%'", (err, result) => {
     if (err) {
       return console.error("error running query", err);
