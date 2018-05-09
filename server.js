@@ -114,13 +114,14 @@ console.log("add:", add);
     if (err) {
       return console.error("error running query", err);
     }
-    console.log(result.rows);
     contact = result.rows[0].id;
+    console.log("owner:", contact);
     client.query("SELECT id FROM users WHERE email LIKE '%" + user + "%'", (err, result) => {
       if (err) {
         return console.error("error running query", err);
       }
       owner = result.rows[0].id;
+      console.log("owner:", owner);
       client.query("INSERT INTO contacts (owner_id, contact_id, nickname) VALUES (" + owner + ", " + contact + ", " + name + ")", (err, result) => {
         if (err) {
           return console.error("error inserting query", err);
