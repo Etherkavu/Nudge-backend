@@ -105,24 +105,24 @@ var contact;
         if (err) {
           return console.error("error inserting query", err);
         }
-        console.log("contact created")
       });
     }
-    client.query("SELECT id FROM users WHERE email LIKE '%" + email + "%'", (err, result) => {
+  });
+  console.log(results);
+  client.query("SELECT id FROM users WHERE email LIKE '%" + email + "%'", (err, result) => {
+    if (err) {
+      return console.error("error running query", err);
+    }
+    contact = result.rows[0].id;
+    client.query("SELECT id FROM users WHERE email LIKE '%" + user + "%'", (err, result) => {
       if (err) {
         return console.error("error running query", err);
       }
-      contact = result.rows[0].id;
-      client.query("SELECT id FROM users WHERE email LIKE '%" + user + "%'", (err, result) => {
+      owner = result.rows[0].id;
+      client.query("INSERT INTO contacts (owner_id, contact_id, nickname) VALUES (" + owner + ", " + contact + ", " + name + ")", (err, result) => {
         if (err) {
-          return console.error("error running query", err);
+          return console.error("error inserting query", err);
         }
-        owner = result.rows[0].id;
-        client.query("INSERT INTO contacts (owner_id, contact_id, nickname) VALUES (" + owner + ", " + contact + ", " + name + ")", (err, result) => {
-          if (err) {
-            return console.error("error inserting query", err);
-          }
-        });
       });
     });
   });
@@ -156,32 +156,32 @@ var corsOptions = {
 app.get("/ping", cors(corsOptions), (req, res) => {
   console.log("Hey look we made it here");
   activeusers['moo@moo.moo'] = {count: 0};
-  res.sendStatus(200);
+  res.send(200);
 });
 
 app.get("/login/:id", cors(corsOptions), (req, res) => {
   activeusers[req.params.id] = {count : 0}
-  res.sendStatus(200);
+  res.send(200);
 });
 
 app.get("/logout/:id", cors(corsOptions), (req, res) => {
   delete activeusers[req.params.id];
-  res.sendStatus(200);
+  res.send(200);
 });
 
 app.get("/update/:id", cors(corsOptions), (req, res) => {
   addContact(req.params.id, 'bkavuh@gmail.com', 'jeff');
-  res.sendStatus(200);
+  res.send(200);
 });
 
 app.get("/register", cors(corsOptions), (req, res) => {
   register(req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.contact_name, req.body.contact_email);
-  res.sendStatus(200);
+  res.send(200);
 });
 
 app.get("/update/:id", cors(corsOptions), (req, res) => {
   updateContact(req.params.id, req.body.email, req.body.name);
-  res.sendStatus(200);
+  res.send(200);
 });
 
 app.listen(PORT, () => {
