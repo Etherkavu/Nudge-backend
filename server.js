@@ -161,6 +161,7 @@ async function pullContacts(user){
 
         }
         results += " ]}"
+        console.log(results);
         return results;
       });
     });
@@ -210,7 +211,6 @@ app.get("/contacts", cors(corsOptions), (req, res) => {
   pullContacts('moo@moo.moo').then((list) => {
     console.log(list);
   });
-
 });
 
 app.get("/insert", cors(corsOptions), (req, res) => {
