@@ -156,13 +156,13 @@ function pullContacts(user){
         results += "{ "
         for (var i = 0; i < result.rows.length; i ++){
           if(i===0){
-            results += "{ email: " + result.rows[0].email + ", nickname: " + namelist[i] + " } "
+            results += "{ email: " + result.rows[0].email + ", nickname: " + namelist[i] + " }"
           }else{
-            results += ", { email: " + result.rows[0].email + ", nickname: " + namelist[i] + " } "
+            results += ", { email: " + result.rows[0].email + ", nickname: " + namelist[i] + " }"
           }
 
         }
-        results += "}"
+        results += " }"
         console.log(results);
         return results;
       });
@@ -211,7 +211,7 @@ app.get("/logout", cors(corsOptions), (req, res) => {
 
 app.get("/get", cors(corsOptions), (req, res) => {
   var list = pullContacts('moo@moo.moo');
-  // res.send(list);
+  res.send(list);
 });
 app.get("/insert", cors(corsOptions), (req, res) => {
   addContact(req.body.user, req.body.email, req.body.nickname);
