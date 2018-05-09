@@ -209,9 +209,9 @@ app.get("/logout", cors(corsOptions), (req, res) => {
   res.sendStatus(200);
 });
 
-app.get("/get", cors(corsOptions), (req, res) => {
+app.post("/get", cors(corsOptions), (req, res) => {
   var list = pullContacts('moo@moo.moo');
-  res.send(list);
+  res.json(list);
 });
 app.get("/insert", cors(corsOptions), (req, res) => {
   addContact(req.body.user, req.body.email, req.body.nickname);
