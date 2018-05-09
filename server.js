@@ -126,7 +126,7 @@ var contact;
     });
   });
 }
-function pullContacts(user){
+async function pullContacts(user){
   var results = '';
   var namelist = [];
   var idlist = ''
@@ -206,8 +206,8 @@ app.get("/logout", cors(corsOptions), (req, res) => {
   res.sendStatus(200);
 });
 
-app.post("/contacts", cors(corsOptions), (req, res) => {
-  var list = pullContacts('moo@moo.moo');
+app.get("/contacts", cors(corsOptions), (req, res) => {
+  var list = await pullContacts('moo@moo.moo');
   console.log(list);
   res.json(list);
 });
