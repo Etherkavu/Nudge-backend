@@ -126,6 +126,19 @@ var contact;
     });
   });
 }
+function pullContacts(user){
+  client.query("SELECT id FROM users WHERE email LIKE '%" + user + "%'", (err, result) => {
+      if (err) {
+        return console.error("error running query", err);
+      }
+      client.query("SELECT * FROM contacts WHERE owner_id = " + result, (err, result) => {
+        if (err) {
+          return console.error("error running query", err);
+        }
+        console.log(result.rows);
+      });
+  });
+}
 
 function sendEmail(email){
   app.mailer.send('email', {
@@ -143,6 +156,8 @@ function sendEmail(email){
   });
 };
 
+
+
 var corsOptions = {
   origin: 'https://nudge-client-app.herokuapp.com',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
@@ -154,18 +169,23 @@ app.get("/ping", cors(corsOptions), (req, res) => {
   res.sendStatus(200);
 });
 
-app.get("/login/:id", cors(corsOptions), (req, res) => {
-  activeusers[req.params.id] = {count : 0}
+app.get("/login", cors(corsOptions), (req, res) => {
+  activeusers[req.body.id] = {count : 0}
   res.sendStatus(200);
 });
 
-app.get("/logout/:id", cors(corsOptions), (req, res) => {
-  delete activeusers[req.params.id];
+app.get("/logout", cors(corsOptions), (req, res) => {
+  delete activeusers[req.body.id];
   res.sendStatus(200);
 });
 
-app.get("/insert/:id", cors(corsOptions), (req, res) => {
-  addContact(req.params.id, 'bkavuh@gmail.com', 'jeff');
+app.get("/get", cors(corsOptions), (req, res) => {
+  var list = pullContacts(moo@moo.moo);
+  console.log(list);
+  // res.send(list);
+});
+app.get("/insert", cors(corsOptions), (req, res) => {
+  addContact(req.body.user, req.body.email, req.body.nickname);
   res.sendStatus(200);
 });
 
@@ -175,11 +195,11 @@ app.get("/register", cors(corsOptions), (req, res) => {
   res.sendStatus(200);
 });
 
-app.get("/update/:id", cors(corsOptions), (req, res) => {
-  updateContact(req.params.id, req.body.email, req.body.name);
-  console.log(req.params.id, req.body.email, req.body.name);
-  res.sendStatus(200);
-});
+// app.get("/update", cors(corsOptions), (req, res) => {
+//   updateContact(req.body.user, req.body.email, req.body.name);
+//   console.log(req.params.id, req.body.email, req.body.name);
+//   res.sendStatus(200);
+// });
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
