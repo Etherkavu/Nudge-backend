@@ -156,9 +156,9 @@ function pullContacts(user){
         results += "{ "
         for (var i = 0; i < result.rows.length; i ++){
           if(i===0){
-            results += "{ email: " + results.rows[0].email + ", nickname: " + namelist[i] + " } "
+            results += "{ email: " + result.rows[0].email + ", nickname: " + namelist[i] + " } "
           }else{
-            results += ", { email: " + results.rows[0].email + ", nickname: " + namelist[i] + " } "
+            results += ", { email: " + result.rows[0].email + ", nickname: " + namelist[i] + " } "
           }
 
         }
