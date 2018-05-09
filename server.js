@@ -209,7 +209,7 @@ app.get("/logout", cors(corsOptions), (req, res) => {
 app.get("/contacts", cors(corsOptions), (req, res) => {
   pullContacts('moo@moo.moo').then((list) => {
     console.log(list);
-  }
+  });
 
 });
 
