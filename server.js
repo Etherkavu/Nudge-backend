@@ -208,6 +208,7 @@ app.get("/logout", cors(corsOptions), (req, res) => {
 
 app.post("/contacts", cors(corsOptions), (req, res) => {
   var list = pullContacts('moo@moo.moo');
+  console.log(list);
   res.json(list);
 });
 app.get("/insert", cors(corsOptions), (req, res) => {
