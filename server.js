@@ -243,11 +243,9 @@ app.get("/contacts", cors(corsOptions), (req, res) => {
         }
         results += " ]}"
         console.log(results);
-        rres.send(results);
+        res.send(results);
       });
     });
-  });
-    console.log(list);
   });
 });
 
