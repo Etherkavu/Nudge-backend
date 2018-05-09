@@ -126,7 +126,7 @@ var contact;
     });
   });
 }
-function pullContacts(user){
+async function pullContacts(user){
   var results = '';
   var namelist = [];
   var idlist = ''
@@ -207,10 +207,12 @@ app.get("/logout", cors(corsOptions), (req, res) => {
 });
 
 app.get("/contacts", cors(corsOptions), (req, res) => {
-  var list = pullContacts('moo@moo.moo');
-  console.log(list);
-  res.json(list);
+  pullContacts('moo@moo.moo').then((list) => {
+    console.log(list);
+  }
+
 });
+
 app.get("/insert", cors(corsOptions), (req, res) => {
   addContact(req.body.user, req.body.email, req.body.nickname);
   res.sendStatus(200);
