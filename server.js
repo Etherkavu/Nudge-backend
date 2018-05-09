@@ -102,7 +102,7 @@ console.log("hi!");
       return console.error("error running query", err);
     }
     console.log("hai", result.rows[0].exists);
-    if (result.rows[0].exists == false){
+    if (result.rows[0].exists == 'false'){
       client.query("INSERT INTO users (email) VALUES (" + email + ")", (err, result) => {
         if (err) {
           return console.error("error inserting query", err);
