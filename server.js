@@ -146,10 +146,12 @@ function pullContacts(user){
         idlist += ', ' + result.rows[i].contact_id;
         }
         namelist.push(result.rows[i].nickname);
+        console.log(result.rows[i]);
+        console.log(result.rows[i].nickname);
       }
       console.log(idlist);
       console.log(namelist);
-      client.query("SELECT * FROM Customers WHERE id IN ("+ idlist +")", (err, result) => {
+      client.query("SELECT email FROM users WHERE id IN ("+ idlist +")", (err, result) => {
         if (err) {
          return console.error("error running query", err);
         }
