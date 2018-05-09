@@ -127,7 +127,7 @@ var contact;
   });
 }
 function pullContacts(user){
-  var results = {};
+  var results = '';
   var namelist = [];
   var idlist = ''
   client.query("SELECT id FROM users WHERE email LIKE '%" + user + "%'", (err, result) => {
@@ -146,8 +146,6 @@ function pullContacts(user){
         idlist += ', ' + result.rows[i].contact_id;
         }
         namelist.push(result.rows[i].nickname);
-        console.log(result.rows[i]);
-        console.log(result.rows[i].nickname);
       }
       console.log(idlist);
       console.log(namelist);
@@ -155,6 +153,18 @@ function pullContacts(user){
         if (err) {
          return console.error("error running query", err);
         }
+        results += "{ "
+        for (var i = 0; i < result.rows.length; i ++){
+          if(i===0){
+            results += "{ email: " + results.rows[0].email + ", nickname: " + namelist[i] " } "
+          }else{
+            results += ", { email: " + results.rows[0].email + ", nickname: " + namelist[i] " } "
+          }
+
+        }
+        results += "}"
+        console.log(results);
+        return results;
       });
     });
   });
