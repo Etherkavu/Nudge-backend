@@ -93,24 +93,24 @@ function checkInCheck() {
   };
 }
 
-function addContact(user, email, name){
+function addContact(user, add, name){
 var owner;
 var contact;
-console.log("hi!");
-  client.query("SELECT EXISTS (SELECT 1 FROM users WHERE email LIKE '%"+ email +"%')", (err, result) => {
+console.log(add);
+  client.query("SELECT EXISTS (SELECT 1 FROM users WHERE email LIKE '%"+ add +"%')", (err, result) => {
     if (err) {
       return console.error("error running query", err);
     }
     console.log("hai", result.rows[0].exists);
     if (result.rows[0].exists == false){
       console.log("hai!!!!", result.rows[0].exists);
-      client.query("INSERT INTO users (email) VALUES (" + email + ")", (err, result) => {
+      client.query("INSERT INTO users (email) VALUES (" + add + ")", (err, result) => {
         if (err) {
           return console.error("error inserting query", err);
         }
       });
     }
-  client.query("SELECT id FROM users WHERE email LIKE '%" + email + "%'", (err, result) => {
+  client.query("SELECT id FROM users WHERE email LIKE '%" + add + "%'", (err, result) => {
     if (err) {
       return console.error("error running query", err);
     }
