@@ -256,9 +256,9 @@ app.get("/insert", cors(corsOptions), (req, res) => {
   res.sendStatus(200);
 });
 
-app.get("/register", cors(corsOptions), (req, res) => {
+app.post("/contacts", cors(corsOptions), (req, res) => {
   // register(req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.contact_name, req.body.contact_email);
-  console.log(req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.contact_name, req.body.contact_email);
+  console.log(req.body.firstParam);
   res.sendStatus(200);
 });
 
