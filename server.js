@@ -115,7 +115,7 @@ console.log("hi!");
     if (err) {
       return console.error("error running query", err);
     }
-    console.log(result.rows[0].id);
+    console.log(result.rows);
     contact = result.rows[0].id;
     client.query("SELECT id FROM users WHERE email LIKE '%" + user + "%'", (err, result) => {
       if (err) {
