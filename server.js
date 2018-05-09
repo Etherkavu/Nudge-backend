@@ -127,7 +127,7 @@ var contact;
   });
 }
 async function pullContacts(user){
-  var results = '';
+  var results = 'WEEEEEE';
   var namelist = [];
   var idlist = ''
   client.query("SELECT id FROM users WHERE email LIKE '%" + user + "%'", (err, result) => {
