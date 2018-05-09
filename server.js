@@ -134,7 +134,6 @@ function pullContacts(user){
     if (err) {
       return console.error("error running query", err);
     }
-    console.log(result.rows);
     client.query("SELECT * FROM contacts WHERE owner_id = " + result.rows[0].id, (err, result) => {
       if (err) {
         return console.error("error running query", err);
@@ -147,8 +146,7 @@ function pullContacts(user){
         }
         namelist.push(result.rows[i].nickname);
       }
-      console.log(idlist);
-      console.log(namelist);
+
       client.query("SELECT email FROM users WHERE id IN ("+ idlist +")", (err, result) => {
         if (err) {
          return console.error("error running query", err);
@@ -163,7 +161,6 @@ function pullContacts(user){
 
         }
         results += " ]}"
-        console.log(results);
         return results;
       });
     });
@@ -209,9 +206,9 @@ app.get("/logout", cors(corsOptions), (req, res) => {
   res.sendStatus(200);
 });
 
-app.post("/get", cors(corsOptions), (req, res) => {
+app.post("/contacts", cors(corsOptions), (req, res) => {
   var list = pullContacts('moo@moo.moo');
-  res.send(list);
+  res.json(list);
 });
 app.get("/insert", cors(corsOptions), (req, res) => {
   addContact(req.body.user, req.body.email, req.body.nickname);
