@@ -109,8 +109,6 @@ console.log("hi!");
         }
       });
     }
-  });
-
   client.query("SELECT id FROM users WHERE email LIKE '%" + email + "%'", (err, result) => {
     if (err) {
       return console.error("error running query", err);
@@ -129,6 +127,7 @@ console.log("hi!");
       });
     });
   });
+});
 }
 
 function temp1(){
