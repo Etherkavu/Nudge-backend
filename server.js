@@ -97,7 +97,7 @@ function addContact(user, email, name){
 var owner;
 var contact;
 console.log("hi!");
-  client.query("SELECT EXISTS (SELECT 1 FROM user WHERE email LIKE '%"+ email+"%'", (err, result) => {
+  client.query("SELECT EXISTS (SELECT 1 FROM user WHERE email LIKE '%"+ email+"%')", (err, result) => {
     if (err) {
       return console.error("error running query", err);
     }
