@@ -105,24 +105,24 @@ var contact;
         if (err) {
           return console.error("error inserting query", err);
         }
+        console.log("contact created")
       });
     }
-  });
-
-  client.query("SELECT id FROM users WHERE email LIKE '%" + email + "%'", (err, result) => {
-    if (err) {
-      return console.error("error running query", err);
-    }
-    contact = result.rows[0].id;
-    client.query("SELECT id FROM users WHERE email LIKE '%" + user + "%'", (err, result) => {
+    client.query("SELECT id FROM users WHERE email LIKE '%" + email + "%'", (err, result) => {
       if (err) {
         return console.error("error running query", err);
       }
-      owner = result.rows[0].id;
-      client.query("INSERT INTO contacts (owner_id, contact_id, nickname) VALUES (" + owner + ", " + contact + ", " + name + ")", (err, result) => {
+      contact = result.rows[0].id;
+      client.query("SELECT id FROM users WHERE email LIKE '%" + user + "%'", (err, result) => {
         if (err) {
-          return console.error("error inserting query", err);
+          return console.error("error running query", err);
         }
+        owner = result.rows[0].id;
+        client.query("INSERT INTO contacts (owner_id, contact_id, nickname) VALUES (" + owner + ", " + contact + ", " + name + ")", (err, result) => {
+          if (err) {
+            return console.error("error inserting query", err);
+          }
+        });
       });
     });
   });
