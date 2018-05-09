@@ -180,7 +180,7 @@ app.get("/logout", cors(corsOptions), (req, res) => {
 });
 
 app.get("/get", cors(corsOptions), (req, res) => {
-  var list = pullContacts(moo@moo.moo);
+  var list = pullContacts('moo@moo.moo');
   console.log(list);
   // res.send(list);
 });
