@@ -265,9 +265,18 @@ app.post("/contacts", (req, res, next) => {
   console.log("first param:", req.body.firstParam);
   console.log("req body:", req.body);
 
+
   res.sendStatus(200);
 });
 
+app.get("/testing", (req, res, next) => {
+  // register(req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.contact_name, req.body.contact_email);
+  console.log("first param:", req.body.firstParam);
+  console.log("req body:", req.body);
+
+
+  res.sendStatus(200);
+});
 // app.get("/update", (req, res) => {
 //   updateContact(req.body.user, req.body.email, req.body.name);
 //   console.log(req.params.id, req.body.email, req.body.name);
