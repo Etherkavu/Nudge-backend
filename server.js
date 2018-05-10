@@ -33,12 +33,6 @@ var activeusers = {
   }
 };
 
- app.all('/', function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With");
-    next()
-  });
-
 mailer.extend(app, {
   from: 'no-reply@example.com',
   host: 'smtp.gmail.com', // hostname
@@ -189,25 +183,25 @@ function sendEmail(email){
   });
 };
 
+app.use(cors());
 
+// var corsOptions = {
+//   origin: "http://nudge-client-app.herokuapp.com",
+//   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+// }
 
-var corsOptions = {
-  origin: "*",
-  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-}
-
-app.get("/ping", cors(corsOptions), (req, res, next) => {
+app.get("/ping", (req, res, next) => {
   console.log("Hey look we made it here");
   activeusers['moo@moo.moo'] = {count: 0};
   res.sendStatus(200);
 });
 
-app.get("/login", cors(corsOptions), (req, res, next) => {
+app.get("/login", (req, res, next) => {
   activeusers[req.body.id] = {count : 0}
   res.sendStatus(200);
 });
 
-app.get("/logout", cors(corsOptions), (req, res, next) => {
+app.get("/logout", (req, res, next) => {
   delete activeusers[req.body.id];
   res.sendStatus(200);
 });
@@ -255,12 +249,12 @@ app.get("/contacts", (req, res, next) => {
   });
 });
 
-app.get("/insert", cors(corsOptions), (req, res, next) => {
+app.get("/insert", (req, res, next) => {
   addContact(req.body.user, req.body.email, req.body.nickname);
   res.sendStatus(200);
 });
 
-app.post("/contacts", cors(corsOptions), (req, res, next) => {
+app.post("/contacts", (req, res, next) => {
   // register(req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.contact_name, req.body.contact_email);
   console.log("first param:", req.body.firstParam);
   console.log("req body:", req.body);
@@ -268,7 +262,7 @@ app.post("/contacts", cors(corsOptions), (req, res, next) => {
   res.sendStatus(200);
 });
 
-// app.get("/update", cors(corsOptions), (req, res) => {
+// app.get("/update", (req, res) => {
 //   updateContact(req.body.user, req.body.email, req.body.name);
 //   console.log(req.params.id, req.body.email, req.body.name);
 //   res.sendStatus(200);
