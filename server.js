@@ -262,7 +262,7 @@ app.post("/contacts", cors(corsOptions), (req, res) => {
   // register(req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.contact_name, req.body.contact_email);
   console.log("first param:", req.body.firstParam);
   console.log("req body:", req.body);
-  console.log("JSON", JSON.parse(req.body);
+  console.log("JSON", JSON.parse(req.body))
   console.log("req: ", req);
   res.sendStatus(200);
 });
