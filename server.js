@@ -238,7 +238,7 @@ app.post("/contacts", (req, res, next) => {
   }).on("error", (err) => {
     console.log("Error: " + err.message);
   });
-
+  res.sendStatus(200);
 });
 
 app.get("/testing", (req, res, next) => {
