@@ -225,11 +225,12 @@ app.post("/contacts", (req, res, next) => {
   var IdToken = req.body.firstParam;
   var clientId = '241417537066-elmbirp4ups9h0cjp73u70nkgur98nq4.apps.googleusercontent.com';
   verifier.verify(IdToken, clientId, function (err, tokenInfo) {
-  if (!err) {
+  if (err) {
     // use tokenInfo in here.
+    console.log("token error: ", err);
+  } else {
     console.log("token: ", tokenInfo);
   }
-    console.log("token: ", tokenInfo);
 });
   res.sendStatus(200);
 });
