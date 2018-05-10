@@ -213,6 +213,7 @@ app.get("/logout", cors(corsOptions), (req, res, next) => {
 });
 
 app.get("/contacts", cors(corsOptions), (req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
   var user = 'moo@moo.moo'
   var results = '';
   var namelist = [];
