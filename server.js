@@ -205,8 +205,7 @@ app.post("/login", (req, res, next) => {
         });
         activeusers[info.email] = {count: 0};
         console.log("ACTIVE USERS: ", activeusers);
-        var send = "{'id':'" + id + "'}"
-        res.status(200).send(send);
+        res.status(200).send(id);
       });
 
     }).on("error", (err) => {
