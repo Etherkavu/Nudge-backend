@@ -188,7 +188,6 @@ app.post("/login", (req, res, next) => {
               }
             });
         } else {
-          console.log(result.rows[0])
             if(result.rows[0].first_name = null){
               client.query("UPDATE users SET first_name = '"+ info.given_name +"', last_name = '"+ info.famil_name +"' WHERE email = '" + info.email + "'", (err, result) => {
                 if (err) {
@@ -201,6 +200,7 @@ app.post("/login", (req, res, next) => {
           if (err) {
             return console.error("error inserting query", err);
           }
+          console.log(result.rows);
           id = results.rows[0].id;
         });
         activeusers[info.email] = {count: 0};
@@ -224,9 +224,8 @@ app.get("/logout/:id", (req, res, next) => {
     }
     email = result.rows[0].email;
     delete activeusers[email];
+    res.sendStatus(200);
   });
-res.sendStatus(200);
-
 });
 
 app.get("/contacts/:id", (req, res, next) => {
