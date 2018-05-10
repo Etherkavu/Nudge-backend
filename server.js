@@ -163,19 +163,74 @@ app.get("/ping", (req, res, next) => {
   res.sendStatus(200);
 });
 
-app.get("/login", (req, res, next) => {
-  activeusers[req.body.id] = {count : 0}
-  res.sendStatus(200);
+app.post("/login", (req, res, next) => {
+  var id = 0;
+  https.get("https://www.googleapis.com/oauth2/v3/tokeninfo?id_token="+req.body.firstParam, (resp) => {
+    let data = '';
+
+    // A chunk of data has been recieved.
+    resp.on('data', (chunk) => {
+      data += chunk;
+    });
+
+    // The whole response has been received. Print out the result.
+    resp.on('end', () => {
+      var info = JSON.parse(data)
+      client.query("SELECT EXISTS (SELECT 1 FROM users WHERE email LIKE '%"+ info.email +"%')", (err, result) => {
+        if (err) {
+          return console.error("error running query", err);
+        }
+        console.log(result.rows[0])
+        if (result.rows[0].exists == false){
+            client.query("INSERT INTO users (first_name, last_name, email) VALUES ('" + info.given_name + "', '" + info.family_name + "', '" + info.email + "')", (err, result) => {
+              if (err) {
+                return console.error("error inserting query", err);
+              }
+            });
+        } else {
+          console.log(result.rows[0])
+            if(result.rows[0].first+name = null){
+              client.query("UPDATE users SET first_name = '"+ info.given_name +"', last_name = '"+ info.famil_name +"' WHERE email = '" + info.email + "'", (err, result) => {
+                if (err) {
+                  return console.error("error inserting query", err);
+                }
+              });
+            }
+          }
+        client.query("SELECT id FROM users WHERE email LIKE '%" + info.email + "%'", (err, result) => {
+          if (err) {
+            return console.error("error inserting query", err);
+          }
+          id = results.rows[0].id;
+        });
+        activeusers[info.email] = {count: 0};
+        console.log("user ",email,"removed from active users");
+        console.log(activeusers);
+        res.status(200).send("{'id':'" + id + "'}");
+      });
+
+    }).on("error", (err) => {
+      console.log("Error: " + err.message);
+      res.sendStatus(200);
+    });
+  });
+}
+
+app.get("/logout/:id", (req, res, next) => {
+  client.query("SELECT email FROM users WHERE id = " + req.param.id + "%'", (err, result) => {
+    if (err) {
+      return console.error("error inserting query", err);
+    }
+    email = results.rows[0].email;
+    delete activeusers[email];
+  });
+res.sendStatus(200);
+
 });
 
-app.get("/logout", (req, res, next) => {
-  delete activeusers[req.body.id];
-  res.sendStatus(200);
-});
+app.get("/contacts/:id", (req, res, next) => {
 
-app.get("/contacts", (req, res, next) => {
-
-  var user = 'moo@moo.moo'
+  var id = req.params.id;
   var results = '';
   var namelist = [];
   var idlist = ''
@@ -183,7 +238,7 @@ app.get("/contacts", (req, res, next) => {
     if (err) {
       return console.error("error running query", err);
     }
-    client.query("SELECT * FROM contacts WHERE owner_id = " + result.rows[0].id, (err, result) => {
+    client.query("SELECT * FROM contacts WHERE owner_id = " + id, (err, result) => {
       if (err) {
         return console.error("error running query", err);
       }
@@ -220,7 +275,7 @@ app.get("/insert", (req, res, next) => {
   res.sendStatus(200);
 });
 
-app.post("/contacts", (req, res, next) => {
+app.post("/contacts/id", (req, res, next) => {
 
   https.get("https://www.googleapis.com/oauth2/v3/tokeninfo?id_token="+req.body.firstParam, (resp) => {
     let data = '';
@@ -233,24 +288,18 @@ app.post("/contacts", (req, res, next) => {
     // The whole response has been received. Print out the result.
     resp.on('end', () => {
       var info = JSON.parse(data)
-      console.log(info);
-      console.log(info.email);
+      email = info.email;
+      console.log(email);
+
+      res.sendStatus(200);
     });
 
   }).on("error", (err) => {
     console.log("Error: " + err.message);
+    res.sendStatus(200);
   });
-  res.sendStatus(200);
 });
 
-app.get("/testing", (req, res, next) => {
-  // register(req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.contact_name, req.body.contact_email);
-  console.log("first param:", req.body.firstParam);
-  console.log("req body:", req.body);
-
-
-  res.sendStatus(200);
-});
 // app.get("/update", (req, res) => {
 //   updateContact(req.body.user, req.body.email, req.body.name);
 //   console.log(req.params.id, req.body.email, req.body.name);
