@@ -232,7 +232,7 @@ app.post("/contacts", (req, res, next) => {
 
     // The whole response has been received. Print out the result.
     resp.on('end', () => {
-      var info = json.Parse(data)
+      var info = JSON.Parse(data)
       console.log(info);
       console.log(info.email);
     });
