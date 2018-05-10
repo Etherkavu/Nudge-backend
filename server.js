@@ -227,9 +227,9 @@ app.post("/contacts", (req, res, next) => {
   verifier.verify(IdToken, clientId, function (err, tokenInfo) {
   if (!err) {
     // use tokenInfo in here.
-    console.log(tokenInfo);
+    console.log("token: ", tokenInfo);
   }
-    console.log(tokenInfo);
+    console.log("token: ", tokenInfo);
 });
   res.sendStatus(200);
 });
