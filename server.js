@@ -175,7 +175,7 @@ app.post("/login", (req, res, next) => {
 
     // The whole response has been received. Print out the result.
     resp.on('end', () => {
-      var info = JSON.parse(data)
+      var info = JSON.parse(data);
       client.query("SELECT EXISTS (SELECT 1 FROM users WHERE email LIKE '%"+ info.email +"%')", (err, result) => {
         if (err) {
           return console.error("error running query", err);
@@ -205,7 +205,9 @@ app.post("/login", (req, res, next) => {
         });
         activeusers[info.email] = {count: 0};
         console.log("ACTIVE USERS: ", activeusers);
-        res.status(200).send(id);
+        var post = "{ 'id:'"+id+"' }";
+        console.log("post:", post);
+        res.sendStatus(200).send(post);
       });
 
     }).on("error", (err) => {
