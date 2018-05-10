@@ -234,40 +234,37 @@ app.get("/contacts/:id", (req, res, next) => {
   var results = '';
   var namelist = [];
   var idlist = ''
-  client.query("SELECT id FROM users WHERE email LIKE '%" + user + "%'", (err, result) => {
+
+  client.query("SELECT * FROM contacts WHERE owner_id = " + id, (err, result) => {
     if (err) {
       return console.error("error running query", err);
     }
-    client.query("SELECT * FROM contacts WHERE owner_id = " + id, (err, result) => {
-      if (err) {
-        return console.error("error running query", err);
+    for(var i = 0; i < result.rows.length; i ++){
+      if(i===0){
+        idlist += result.rows[i].contact_id;
+      }else{
+      idlist += ', ' + result.rows[i].contact_id;
       }
-      for(var i = 0; i < result.rows.length; i ++){
-        if(i===0){
-          idlist += result.rows[i].contact_id;
-        }else{
-        idlist += ', ' + result.rows[i].contact_id;
-        }
-        namelist.push(result.rows[i].nickname);
-      }
+      namelist.push(result.rows[i].nickname);
+    }
 
-      client.query("SELECT email FROM users WHERE id IN ("+ idlist +")", (err, result) => {
-        if (err) {
-         return console.error("error running query", err);
+    client.query("SELECT email FROM users WHERE id IN ("+ idlist +")", (err, result) => {
+      if (err) {
+       return console.error("error running query", err);
+      }
+      results += '{ "users" : ['
+      for (var i = 0; i < result.rows.length; i ++){
+        if(i===0){
+          results += '{ "email":"' + result.rows[0].email + '", "nickname":"' + namelist[i] + '" }'
+        }else{
+          results += ', { "email":"' + result.rows[0].email + '", "nickname": "' + namelist[i] + '" }'
         }
-        results += '{ "users" : ['
-        for (var i = 0; i < result.rows.length; i ++){
-          if(i===0){
-            results += '{ "email":"' + result.rows[0].email + '", "nickname":"' + namelist[i] + '" }'
-          }else{
-            results += ', { "email":"' + result.rows[0].email + '", "nickname": "' + namelist[i] + '" }'
-          }
-        }
-        results += " ]}"
-        res.status(200).send(results);
-      });
+      }
+      results += " ]}"
+      res.status(200).send(results);
     });
   });
+
 });
 
 app.get("/insert", (req, res, next) => {
