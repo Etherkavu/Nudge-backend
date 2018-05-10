@@ -7,7 +7,7 @@ var express = require('express')(),
 var PORT = process.env.PORT || 5000; // default port 5000
 const bodyParser = require("body-parser");
 const {OAuth2Client} = require('google-auth-library');
-const idClient = new OAuth2Client('511967932114-c7p669ksjmsajndg0spiboevbmjf4c4g.apps.googleusercontent.com');
+const idClient = new OAuth2Client('241417537066-elmbirp4ups9h0cjp73u70nkgur98nq4.apps.googleusercontent.com');
 const client = new Client({
   connectionString: process.env.DATABASE_URL,
   ssl: true
@@ -225,9 +225,7 @@ app.post("/contacts", (req, res, next) => {
   async function verify() {
   const ticket = await idClient.verifyIdToken({
       idToken: req.body.firstParam,
-      audience: '511967932114-c7p669ksjmsajndg0spiboevbmjf4c4g.apps.googleusercontent.com',  // Specify the CLIENT_ID of the app that accesses the backend
-      // Or, if multiple clients access the backend:
-      //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+      audience: '241417537066-elmbirp4ups9h0cjp73u70nkgur98nq4.apps.googleusercontent.com',
   });
   const payload = ticket.getPayload();
   const userid = payload['sub'];
