@@ -214,7 +214,7 @@ app.post("/login", (req, res, next) => {
       res.sendStatus(200);
     });
   });
-}
+});
 
 app.get("/logout/:id", (req, res, next) => {
   client.query("SELECT email FROM users WHERE id = " + req.param.id + "%'", (err, result) => {
