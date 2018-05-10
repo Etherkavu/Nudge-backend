@@ -6,7 +6,7 @@ var express = require('express')(),
     mailer = require('express-mailer');
 var PORT = process.env.PORT || 5000; // default port 5000
 const bodyParser = require("body-parser");
-const {OAuth2Client} = require('google-auth-library');
+var verifier = require('google-id-token-verifier');
 const client = new Client({
   connectionString: process.env.DATABASE_URL,
   ssl: true
@@ -222,13 +222,23 @@ app.get("/insert", (req, res, next) => {
 
 app.post("/contacts", (req, res, next) => {
   // register(req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.contact_name, req.body.contact_email);
-
+  var IdToken = req.body.firstParam;
+  var clientId = '241417537066-elmbirp4ups9h0cjp73u70nkgur98nq4.apps.googleusercontent.com';
+  verifier.verify(IdToken, clientId, function (err, tokenInfo) {
+  if (!err) {
+    // use tokenInfo in here.
+    console.log(tokenInfo);
+  }
+    console.log(tokenInfo);
+});
   res.sendStatus(200);
 });
 
 app.get("/testing", (req, res, next) => {
   // register(req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.contact_name, req.body.contact_email);
   console.log("first param:", req.body.firstParam);
+  console.log("req body:", req.body);
+
 
   res.sendStatus(200);
 });
