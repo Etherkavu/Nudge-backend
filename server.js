@@ -204,7 +204,6 @@ app.post("/login", (req, res, next) => {
           id = results.rows[0].id;
         });
         activeusers[info.email] = {count: 0};
-        console.log("user ",email,"removed from active users");
         console.log(activeusers);
         var send = "{'id':'" + id + "'}"
         res.status(200).send(send);
