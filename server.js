@@ -201,7 +201,7 @@ app.post("/login", (req, res, next) => {
             return console.error("error inserting query", err);
           }
           console.log(result.rows);
-          id = results.rows[0].id;
+          id = result.rows[0].id;
         });
         activeusers[info.email] = {count: 0};
         console.log(activeusers);
@@ -222,6 +222,7 @@ app.get("/logout/:id", (req, res, next) => {
       return console.error("error inserting query", err);
     }
     email = result.rows[0].email;
+    console.log("user ",email,"removed from active users");
     delete activeusers[email];
     res.sendStatus(200);
   });
