@@ -6,7 +6,7 @@ var express = require('express')(),
     mailer = require('express-mailer');
 var PORT = process.env.PORT || 5000; // default port 5000
 const bodyParser = require("body-parser");
-
+const {OAuth2Client} = require('google-auth-library');
 const client = new Client({
   connectionString: process.env.DATABASE_URL,
   ssl: true
@@ -222,9 +222,20 @@ app.get("/insert", (req, res, next) => {
 
 app.post("/contacts", (req, res, next) => {
   // register(req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.contact_name, req.body.contact_email);
-  console.log("first param:", req.body.firstParam);
-  console.log("req body:", req.body);
-
+  const goClient = new OAuth2Client('241417537066-elmbirp4ups9h0cjp73u70nkgur98nq4.apps.googleusercontent.com');
+async function verify() {
+  const ticket = await client.verifyIdToken({
+      idToken: req.body.firstParam,
+      audience: '241417537066-elmbirp4ups9h0cjp73u70nkgur98nq4.apps.googleusercontent.com,  // Specify the CLIENT_ID of the app that accesses the backend'
+      // Or, if multiple clients access the backend:
+      //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+  });
+  const payload = ticket.getPayload();
+  const userid = payload['sub'];
+  // If request specified a G Suite domain:
+  //const domain = payload['hd'];
+}
+verify().catch(console.error);
 
   res.sendStatus(200);
 });
