@@ -217,7 +217,7 @@ app.post("/login", (req, res, next) => {
 });
 
 app.get("/logout/:id", (req, res, next) => {
-  client.query("SELECT email FROM users WHERE id = " + req.param.id + "%'", (err, result) => {
+  client.query("SELECT email FROM users WHERE id = " + req.param.id, (err, result) => {
     if (err) {
       return console.error("error inserting query", err);
     }
