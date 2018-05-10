@@ -212,8 +212,8 @@ app.get("/logout", cors(corsOptions), (req, res, next) => {
   res.sendStatus(200);
 });
 
-app.get("/contacts", cors(corsOptions), (req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
+app.get("/contacts", (req, res, next) => {
+
   var user = 'moo@moo.moo'
   var results = '';
   var namelist = [];
