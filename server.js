@@ -23,7 +23,7 @@ client.connect((err) => {
 app.set("view engine", "jsx");
 app.engine('jsx', require('express-react-views').createEngine());
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
 
 console.log(`PROCESS ENV DATABASE_URL: ${process.env.DATABASE_URL}`);
 
