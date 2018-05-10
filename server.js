@@ -187,7 +187,7 @@ function sendEmail(email){
 
 
 var corsOptions = {
-  origin: 'https://nudge-client-app.herokuapp.com',
+  origin: '*',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
@@ -240,7 +240,6 @@ app.get("/contacts", cors(corsOptions), (req, res) => {
           }else{
             results += ', { "email":"' + result.rows[0].email + '", "nickname": "' + namelist[i] + '" }'
           }
-
         }
         results += " ]}"
         console.log(results);
