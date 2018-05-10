@@ -6,7 +6,8 @@ var express = require('express')(),
     mailer = require('express-mailer');
 var PORT = process.env.PORT || 5000; // default port 5000
 const bodyParser = require("body-parser");
-var verifier = require('google-id-token-verifier');
+const {OAuth2Client} = require('google-auth-library');
+const idClient = new OAuth2Client('241417537066-elmbirp4ups9h0cjp73u70nkgur98nq4.apps.googleusercontent.com');
 const client = new Client({
   connectionString: process.env.DATABASE_URL,
   ssl: true
@@ -208,7 +209,6 @@ app.get("/contacts", (req, res, next) => {
           }
         }
         results += " ]}"
-        console.log(results);
         res.status(200).send(results);
       });
     });
@@ -222,16 +222,20 @@ app.get("/insert", (req, res, next) => {
 
 app.post("/contacts", (req, res, next) => {
   // register(req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.contact_name, req.body.contact_email);
-  var IdToken = req.body.firstParam;
-  var clientId = '241417537066-elmbirp4ups9h0cjp73u70nkgur98nq4.apps.googleusercontent.com';
-  verifier.verify(IdToken, clientId, function (err, tokenInfo) {
-  if (err) {
-    // use tokenInfo in here.
-    console.log("token error: ", err);
-  } else {
-    console.log("token: ", tokenInfo);
-  }
-});
+  async function verify() {
+  const ticket = await idClient.verifyIdToken({
+      idToken: req.body.firstParam,
+      audience: '241417537066-elmbirp4ups9h0cjp73u70nkgur98nq4.apps.googleusercontent.com',  // Specify the CLIENT_ID of the app that accesses the backend
+      // Or, if multiple clients access the backend:
+      //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+  });
+  const payload = ticket.getPayload();
+  const userid = payload['sub'];
+  // If request specified a G Suite domain:
+  //const domain = payload['hd'];
+}
+verify().catch(console.error);
+
   res.sendStatus(200);
 });
 
