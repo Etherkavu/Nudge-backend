@@ -206,7 +206,8 @@ app.post("/login", (req, res, next) => {
         activeusers[info.email] = {count: 0};
         console.log("user ",email,"removed from active users");
         console.log(activeusers);
-        res.status(200).send("{'id':'" + id + "'}");
+        var send = "{'id':'" + id + "'}"
+        res.status(200).send(send);
       });
 
     }).on("error", (err) => {
@@ -221,7 +222,7 @@ app.get("/logout/:id", (req, res, next) => {
     if (err) {
       return console.error("error inserting query", err);
     }
-    email = results.rows[0].email;
+    email = result.rows[0].email;
     delete activeusers[email];
   });
 res.sendStatus(200);
