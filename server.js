@@ -228,7 +228,7 @@ app.get("/logout/:id", (req, res, next) => {
   });
 });
 
-app.get("/contacts/:id", (req, res, next) => {
+app.get("/contacts/", (req, res, next) => {
 
   var id = req.params.id;
   var results = '';
