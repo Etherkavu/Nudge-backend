@@ -184,11 +184,20 @@ function sendEmail(email){
 };
 
 app.use(cors());
-
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", '*');
+    res.header("Access-Control-Allow-Credentials", true);
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+    res.header("Access-Control-Allow-Headers", 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json');
+    next();
+});
 // var corsOptions = {
 //   origin: "http://nudge-client-app.herokuapp.com",
 //   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 // }
+app.listen(80, function () {
+  console.log('CORS-enabled web server listening on port 80')
+})
 
 app.get("/ping", (req, res, next) => {
   console.log("Hey look we made it here");
