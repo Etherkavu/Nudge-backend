@@ -1,13 +1,11 @@
 var express = require("express");
 var app = express();
-var cors = require('cors');
+//var cors = require('cors');
 const { Client } = require('pg');
 var express = require('express')(),
     mailer = require('express-mailer');
-var PORT = process.env.PORT || 5000; // default port 3000
+var PORT = process.env.PORT || 5000; // default port 5000
 const bodyParser = require("body-parser");
-// bcrypt
-// cookie-session
 
 const client = new Client({
   connectionString: process.env.DATABASE_URL,
@@ -127,47 +125,7 @@ var contact;
     });
   });
 }
-// async function pullContacts(user){
-//   var results = '';
-//   var namelist = [];
-//   var idlist = ''
-//   client.query("SELECT id FROM users WHERE email LIKE '%" + user + "%'", (err, result) => {
-//     if (err) {
-//       return console.error("error running query", err);
-//     }
-//     client.query("SELECT * FROM contacts WHERE owner_id = " + result.rows[0].id, (err, result) => {
-//       if (err) {
-//         return console.error("error running query", err);
-//       }
-//       for(var i = 0; i < result.rows.length; i ++){
-//         if(i===0){
-//           idlist += result.rows[i].contact_id;
-//         }else{
-//         idlist += ', ' + result.rows[i].contact_id;
-//         }
-//         namelist.push(result.rows[i].nickname);
-//       }
 
-//       client.query("SELECT email FROM users WHERE id IN ("+ idlist +")", (err, result) => {
-//         if (err) {
-//          return console.error("error running query", err);
-//         }
-//         results += '{ "users" : ['
-//         for (var i = 0; i < result.rows.length; i ++){
-//           if(i===0){
-//             results += '{ "email":"' + result.rows[0].email + '", "nickname":"' + namelist[i] + '" }'
-//           }else{
-//             results += ', { "email":"' + result.rows[0].email + '", "nickname": "' + namelist[i] + '" }'
-//           }
-
-//         }
-//         results += " ]}"
-//         console.log(results);
-//         return results;
-//       });
-//     });
-//   });
-// }
 
 function sendEmail(email){
   app.mailer.send('email', {
