@@ -87,8 +87,8 @@ function checkInCheck() {
       });
       });
      });
- console.log('EMAIL SENT!');
- activeusers[user].count = 0;
+    console.log('EMAIL SENT!');
+    activeusers[user].count = 0;
     }
   };
 }
@@ -204,7 +204,7 @@ app.post("/login", (req, res, next) => {
           id = result.rows[0].id;
         });
         activeusers[info.email] = {count: 0};
-        console.log(activeusers);
+        console.log("ACTIVE USERS: ", activeusers);
         var send = "{'id':'" + id + "'}"
         res.status(200).send(send);
       });
@@ -228,7 +228,7 @@ app.get("/logout/:id", (req, res, next) => {
   });
 });
 
-app.get("/contacts/", (req, res, next) => {
+app.get("/contacts/:id", (req, res, next) => {
 
   var id = req.params.id;
   var results = '';
