@@ -1,6 +1,6 @@
 var express = require("express");
 var app = express();
-//var cors = require('cors');
+const https = require('https');
 const { Client } = require('pg');
 var express = require('express')(),
     mailer = require('express-mailer');
@@ -221,20 +221,24 @@ app.get("/insert", (req, res, next) => {
 });
 
 app.post("/contacts", (req, res, next) => {
-  // register(req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.contact_name, req.body.contact_email);
-  async function verify() {
-  const ticket = await idClient.verifyIdToken({
-      idToken: req.body.firstParam,
-      audience: '241417537066-elmbirp4ups9h0cjp73u70nkgur98nq4.apps.googleusercontent.com',
-  });
-  const payload = ticket.getPayload();
-  const userid = payload['sub'];
-  // If request specified a G Suite domain:
-  //const domain = payload['hd'];
-}
-verify().catch(console.error);
 
-  res.sendStatus(200);
+  https.get("https://www.googleapis.com/oauth2/v3/tokeninfo?id_token="+req.body.firstParam, (resp) => {
+    let data = '';
+
+    // A chunk of data has been recieved.
+    resp.on('data', (chunk) => {
+      data += chunk;
+    });
+
+    // The whole response has been received. Print out the result.
+    resp.on('end', () => {
+      console.log(JSON.parse(data).explanation);
+    });
+
+  }).on("error", (err) => {
+    console.log("Error: " + err.message);
+  });
+
 });
 
 app.get("/testing", (req, res, next) => {
