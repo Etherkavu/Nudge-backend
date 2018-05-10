@@ -189,7 +189,7 @@ app.post("/login", (req, res, next) => {
             });
         } else {
           console.log(result.rows[0])
-            if(result.rows[0].first+name = null){
+            if(result.rows[0].first_name = null){
               client.query("UPDATE users SET first_name = '"+ info.given_name +"', last_name = '"+ info.famil_name +"' WHERE email = '" + info.email + "'", (err, result) => {
                 if (err) {
                   return console.error("error inserting query", err);
