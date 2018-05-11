@@ -202,14 +202,15 @@ app.post("/login", (req, res, next) => {
           }
           console.log(result.rows);
           id = result.rows[0].id;
-        });
+
         activeusers[info.email] = {count: 0};
         console.log("ACTIVE USERS: ", activeusers);
         var post = JSON.stringify(id);
 
         console.log("post:", post);
         res.setHeader('Content-Type', 'application/json');
-        res.sendStatus(200).send(post);
+        res.send(post);
+        });
       });
 
     }).on("error", (err) => {
