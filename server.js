@@ -134,10 +134,10 @@ function sendEmail(email, user){
   app.mailer.send('email', {
     to: email,
     subject: 'Notice of inactivity',
-    locals: {
-      title: "Notice,",
-      message: "" + user + "has had no activity, please check in on them"
-    }
+    // locals: {
+    //   title: "Notice,",
+    //   message: "" + user + "has had no activity, please check in on them"
+    // }
   }, function (err) {
     if (err) {
       // handle error
@@ -159,7 +159,6 @@ app.use(function(req, res, next) {
 
 app.get("/ping", (req, res, next) => {
   console.log("Hey look we made it here");
-  activeusers['moo@moo.moo'] = {count: 0};
   res.sendStatus(200);
 });
 
@@ -286,7 +285,7 @@ app.post("/insert/:id", (req, res, next) => {
   res.sendStatus(200);
 });
 
-app.post("/contacts/id", (req, res, next) => {
+app.post("/contacts", (req, res, next) => {
 
   https.get("https://www.googleapis.com/oauth2/v3/tokeninfo?id_token="+req.body.firstParam, (resp) => {
     let data = '';
