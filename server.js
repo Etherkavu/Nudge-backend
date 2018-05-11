@@ -134,6 +134,7 @@ function sendEmail(email, user){
   app.mailer.send('email', {
     to: email,
     subject: 'Notice of inactivity',
+    otherProperty: 'Other Property'
     // locals: {
     //   title: "Notice,",
     //   message: "" + user + "has had no activity, please check in on them"
