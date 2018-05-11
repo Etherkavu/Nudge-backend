@@ -134,7 +134,7 @@ function sendEmail(email, user){
     to: email,
     subject: 'Notice of inactivity',
     locals: {
-      title: "Notice,"
+      title: "Notice,",
       message: "" + user + "has has no activity, please check in on them"
     }
   }, function (err) {
