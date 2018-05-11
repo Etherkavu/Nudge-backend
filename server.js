@@ -283,7 +283,7 @@ app.post("/insert/:id", (req, res, next) => {
   res.sendStatus(200);
 });
 
-app.post("/contacts/id", (req, res, next) => {
+app.post("/contacts/:id", (req, res, next) => {
 
   https.get("https://www.googleapis.com/oauth2/v3/tokeninfo?id_token="+req.body.firstParam, (resp) => {
     let data = '';
