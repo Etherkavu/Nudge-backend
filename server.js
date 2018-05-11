@@ -291,6 +291,7 @@ app.get("/contacts/:id", (req, res, next) => {
 });
 
 app.post("/insert/:id", (req, res, next) => {
+  console.log("req.body:", req.body);
   console.log("req.body.email:", req.body.email);
   console.log("req.body.nickname:", req.body.nickname);
   addContact(req.params.id, req.body.email, req.body.nickname);
