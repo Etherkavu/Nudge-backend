@@ -133,10 +133,7 @@ function sendEmail(email){
   app.mailer.send('email', {
     to: email, // REQUIRED. This can be a comma delimited string just like a normal email to field.
     subject: 'Test Email', // REQUIRED.
-    locals: {
-      title: 'Hello',
-      message: 'Welcome to my website'
-    }
+    text: 'HELLO?'
    }, function (err) {
      if (err) {
        // handle error
