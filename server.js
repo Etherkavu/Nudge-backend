@@ -20,9 +20,8 @@ client.connect((err) => {
   }
 });
 
-app.set("view engine", "jsx");
-app.set("views", __dirname + '/views');
-app.engine('jsx', require('express-react-views').createEngine());
+// app.set("view engine", "jsx");
+// app.engine('jsx', require('express-react-views').createEngine());
 
 // Required to let express do POST requests with bodies
 app.use(bodyParser.urlencoded({extended: true}));
@@ -50,7 +49,7 @@ mailer.extend(app, {
 // For each user connected to the app, keeps counter.
 // Once counter reaches 10, it sends an automated email to the user's contact.
 // will increment counter based on myVar
-var myVar = setInterval(checkInCheck, 5000);
+var myVar = setInterval(checkInCheck, 3000);
 function checkInCheck() {
   var emails = [];
   var contactList = '';
@@ -59,42 +58,42 @@ function checkInCheck() {
     console.log("test up", user, activeusers[user].count);
     if (activeusers[user].count > 10){
 
-      //Handles the counter hitting 10,
-      //will query database to pull their contacts emails
-      client.query("SELECT id FROM users WHERE email LIKE '%" + user + "%'", (err, result) => {
+
+
+ client.query("SELECT id FROM users WHERE email LIKE '%" + user + "%'", (err, result) => {
+    if (err) {
+      return console.error("error running query", err);
+    }
+    client.query("SELECT contact_id FROM contacts WHERE owner_id = (" + result.rows[0].id + ")", (err, result) => {
+      if (err) {
+        return console.error("error running query", err);
+      }
+
+      contactList += result.rows[0].contact_id;
+      for (var i = 1; i < result.rows.length; i++){
+        contactList += ", " + (result.rows[i].contact_id);
+      }
+
+      client.query("SELECT email FROM users WHERE id IN (" + contactList + ")", (err, result) => {
         if (err) {
           return console.error("error running query", err);
         }
-        client.query("SELECT contact_id FROM contacts WHERE owner_id = (" + result.rows[0].id + ")", (err, result) => {
-          if (err) {
-            return console.error("error running query", err);
-          }
+        for (var i = 0; i < result.rows.length; i++){
+          emails.push(result.rows[i].email);
+        }
 
-          contactList += result.rows[0].contact_id;
-          for (var i = 1; i < result.rows.length; i++){
-            contactList += ", " + (result.rows[i].contact_id);
-          }
-
-          client.query("SELECT email FROM users WHERE id IN (" + contactList + ")", (err, result) => {
-            if (err) {
-              return console.error("error running query", err);
-            }
-            for (var i = 0; i < result.rows.length; i++){
-              emails.push(result.rows[i].email);
-            }
-
-            for (var i = 0; i < emails.length; i++){
-              sendEmail(emails[i], user);
-            }
-          });
-        });
+        for (var i = 0; i < emails.length; i++){
+          sendEmail(emails[i]);
+        }
       });
-      activeusers[user].count = 0;
+      });
+     });
+
+    activeusers[user].count = 0;
     }
   };
 }
 
-//adds contact to contacts tables, containing idetifier ID's to match it to its owner and its own email.
 function addContact(user, add, name){
 var owner;
 var contact;
@@ -130,25 +129,21 @@ var contact;
 }
 
 
-function sendEmail(email, user){
-  app.mailer.send('email', {
-    to: email,
-    subject: 'Notice of inactivity',
-    otherProperty: 'Other Property'
-    // locals: {
-    //   title: "Notice,",
-    //   message: "" + user + "has had no activity, please check in on them"
-    // }
-  }, function (err) {
-    if (err) {
-      // handle error
-      console.log(err);
-      console.log('There was an error sending the email');
-      return;
-    }
-    console.log('Email Sent');
-  });
-};
+function sendEmail(email){
+   app.mailer.send('email', {
+     to: email, // REQUIRED. This can be a comma delimited string just like a normal email to field.
+     subject: 'Test Email', // REQUIRED.
+     otherProperty: 'Other Property' // All additional properties are also passed to the template as local variables.
+   }, function (err) {
+     if (err) {
+       // handle error
+       console.log(err);
+       console.log('There was an error sending the email');
+       return;
+     }
+     console.log('Email Sent');
+   });
+ };
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", '*');
@@ -160,6 +155,7 @@ app.use(function(req, res, next) {
 
 app.get("/ping", (req, res, next) => {
   console.log("Hey look we made it here");
+  activeusers['moo@moo.moo'] = {count: 0};
   res.sendStatus(200);
 });
 
@@ -186,6 +182,7 @@ app.post("/login", (req, res, next) => {
     // The whole response has been received. Print out the result.
     resp.on('end', () => {
       var info = JSON.parse(data);
+      console.log(info);
       client.query("SELECT EXISTS (SELECT 1 FROM users WHERE email LIKE '%"+ info.email +"%')", (err, result) => {
         if (err) {
           return console.error("error running query", err);
@@ -286,7 +283,7 @@ app.post("/insert/:id", (req, res, next) => {
   res.sendStatus(200);
 });
 
-app.post("/contacts", (req, res, next) => {
+app.post("/contacts/id", (req, res, next) => {
 
   https.get("https://www.googleapis.com/oauth2/v3/tokeninfo?id_token="+req.body.firstParam, (resp) => {
     let data = '';
