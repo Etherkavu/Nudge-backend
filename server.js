@@ -82,9 +82,9 @@ function checkInCheck() {
           emails.push(result.rows[i].email);
         }
 
-        for (var i = 0; i < emails.length; i++){
-          sendEmail(emails[i], user);
-        }
+        // for (var i = 0; i < emails.length; i++){
+        //   sendEmail(emails[i], user);
+        // }
       });
       });
      });
@@ -133,7 +133,7 @@ function sendEmail(email, user){
   app.mailer.send('email', {
     to: email, // REQUIRED. This can be a comma delimited string just like a normal email to field.
     subject: 'Inactive notification', // REQUIRED.
-    text: '\nUser: '+ user + 'has gone inactive, please check in on them.\n\nNotification sent automatically from nudge server, do not reply.'
+    text: '\nUser: '+ user + 'has gone inactive, please check in on them. \n\nNotification sent automatically from nudge server, do not reply.'
    }, function (err) {
      if (err) {
        // handle error
