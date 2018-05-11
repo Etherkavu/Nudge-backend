@@ -208,6 +208,7 @@ app.post("/login", (req, res, next) => {
         var post = JSON.stringify(id);
 
         console.log("post:", post);
+        res.setHeader('Content-Type', 'application/json');
         res.sendStatus(200).send(post);
       });
 
