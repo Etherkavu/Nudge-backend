@@ -81,9 +81,9 @@ function checkInCheck() {
           emails.push(result.rows[i].email);
         }
 
-        // for (var i = 0; i < emails.length; i++){
-        //   sendEmail(emails[i], user);
-        // }
+        for (var i = 0; i < emails.length; i++){
+          sendEmail(emails[i], user);
+        }
       });
       });
      });
