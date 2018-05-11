@@ -130,10 +130,13 @@ var contact;
 
 
 function sendEmail(email){
-   app.mailer.send('email', {
-     to: email, // REQUIRED. This can be a comma delimited string just like a normal email to field.
-     subject: 'Test Email', // REQUIRED.
-     otherProperty: 'Other Property' // All additional properties are also passed to the template as local variables.
+  app.mailer.send('email', {
+    to: email, // REQUIRED. This can be a comma delimited string just like a normal email to field.
+    subject: 'Test Email', // REQUIRED.
+    locals: {
+      title: 'Hello',
+      message: 'Welcome to my website'
+    }
    }, function (err) {
      if (err) {
        // handle error
