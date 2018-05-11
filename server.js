@@ -21,6 +21,7 @@ client.connect((err) => {
 });
 
 app.set("view engine", "jsx");
+app.set("views", '/views');
 app.engine('jsx', require('express-react-views').createEngine());
 
 // Required to let express do POST requests with bodies
