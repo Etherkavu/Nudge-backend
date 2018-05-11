@@ -273,8 +273,15 @@ app.get("/contacts/:id", (req, res, next) => {
       res.status(200).send(results);
     });
     }else{
-      results = '{ "users" : [{ "email":"none", "nickname":"none" } ]}'
+      results = '{ "users" : []}'
+       client.query("SELECT email FROM users WHERE id = " + req.params.id, (err, result) => {
+      if (err) {
+        return console.error("error inserting query", err);
+      }
+      email = result.rows[0].email;
+      delete activeusers[email];
       res.status(200).send(results);
+      });
     }
   });
 
@@ -283,9 +290,18 @@ app.get("/contacts/:id", (req, res, next) => {
 app.post("/insert/:id", (req, res, next) => {
   console.log("req.body.email:", req.body.email);
   console.log("req.body.nickname:", req.body.nickname);
-  addContact(req.body.id, req.body.email, req.body.nickname);
+  addContact(req.params.id, req.body.email, req.body.nickname);
+  client.query("SELECT email FROM users WHERE id = " + req.params.id, (err, result) => {
+    if (err) {
+      return console.error("error inserting query", err);
+    }
+    email = result.rows[0].email;
+    if(!activeusers[email]){
+      activeusers[email] = {count: 0};
+    }
+    res.sendStatus(200);
+  });
 
-  res.sendStatus(200);
 });
 
 app.post("/contacts/:id", (req, res, next) => {
