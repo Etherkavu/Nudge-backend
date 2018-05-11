@@ -20,17 +20,17 @@ client.connect((err) => {
   }
 });
 
+// app.set("view engine", "jsx");
+// app.engine('jsx', require('express-react-views').createEngine());
 
+// Required to let express do POST requests with bodies
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-console.log(`PROCESS ENV DATABASE_URL: ${process.env.DATABASE_URL}`);
-
-
-var myVar = setInterval(checkInCheck, 5000);
+console.log("--------------------SERVER ACTIVE----------------------");
 
 var activeusers = {
-  'moo@moo.moo': {count: 5
+  'moo@moo.moo': {count: 10
   }
 };
 
@@ -48,6 +48,8 @@ mailer.extend(app, {
 
 // For each user connected to the app, keeps counter.
 // Once counter reaches 10, it sends an automated email to the user's contact.
+// will increment counter based on myVar
+var myVar = setInterval(checkInCheck, 300000);
 function checkInCheck() {
   var emails = [];
   var contactList = '';
@@ -56,43 +58,42 @@ function checkInCheck() {
     console.log("test up", user, activeusers[user].count);
     if (activeusers[user].count > 10){
 
-
-
-
- client.query("SELECT id FROM users WHERE email LIKE '%" + user + "%'", (err, result) => {
-    if (err) {
-      return console.error("error running query", err);
-    }
-    client.query("SELECT contact_id FROM contacts WHERE owner_id = (" + result.rows[0].id + ")", (err, result) => {
-      if (err) {
-        return console.error("error running query", err);
-      }
-
-      contactList += result.rows[0].contact_id;
-      for (var i = 1; i < result.rows.length; i++){
-        contactList += ", " + (result.rows[i].contact_id);
-      }
-
-      client.query("SELECT email FROM users WHERE id IN (" + contactList + ")", (err, result) => {
+      //Handles the counter hitting 10,
+      //will query database to pull their contacts emails
+      client.query("SELECT id FROM users WHERE email LIKE '%" + user + "%'", (err, result) => {
         if (err) {
           return console.error("error running query", err);
         }
-        for (var i = 0; i < result.rows.length; i++){
-          emails.push(result.rows[i].email);
-        }
+        client.query("SELECT contact_id FROM contacts WHERE owner_id = (" + result.rows[0].id + ")", (err, result) => {
+          if (err) {
+            return console.error("error running query", err);
+          }
 
-        // for (var i = 0; i < emails.length; i++){
-        //   sendEmail(emails[i]);
-        // }
+          contactList += result.rows[0].contact_id;
+          for (var i = 1; i < result.rows.length; i++){
+            contactList += ", " + (result.rows[i].contact_id);
+          }
+
+          client.query("SELECT email FROM users WHERE id IN (" + contactList + ")", (err, result) => {
+            if (err) {
+              return console.error("error running query", err);
+            }
+            for (var i = 0; i < result.rows.length; i++){
+              emails.push(result.rows[i].email);
+            }
+
+            for (var i = 0; i < emails.length; i++){
+              sendEmail(emails[i], user);
+            }
+          });
+        });
       });
-      });
-     });
-    console.log('EMAIL SENT!');
-    activeusers[user].count = 0;
+      activeusers[user].count = 0;
     }
   };
 }
 
+//adds contact to contacts tables, containing idetifier ID's to match it to its owner and its own email.
 function addContact(user, add, name){
 var owner;
 var contact;
@@ -128,11 +129,14 @@ var contact;
 }
 
 
-function sendEmail(email){
+function sendEmail(email, user){
   app.mailer.send('email', {
-    to: email, // REQUIRED. This can be a comma delimited string just like a normal email to field.
-    subject: 'Test Email', // REQUIRED.
-    otherProperty: 'Other Property' // All additional properties are also passed to the template as local variables.
+    to: email,
+    subject: 'Notice of inactivity',
+    locals: {
+      title: "Notice,"
+      message: "" + user + "has has no activity, please check in on them"
+    }
   }, function (err) {
     if (err) {
       // handle error
