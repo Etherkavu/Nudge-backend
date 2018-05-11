@@ -165,11 +165,11 @@ app.get("/ping", (req, res, next) => {
 
 app.get("/ping/:id", (req, res, next) => {
   client.query("SELECT email FROM users WHERE id = "+ req.params.id, (err, result) => {
-          if (err) {
-            return console.error("error inserting query", err);
-          }
-  activeusers[results.rows[0].email] = {count: 0};
-  res.sendStatus(200);
+    if (err) {
+      return console.error("error inserting query", err);
+    }
+    activeusers[results.rows[0].email] = {count: 0};
+    res.sendStatus(200);
   });
 });
 
@@ -186,6 +186,7 @@ app.post("/login", (req, res, next) => {
     // The whole response has been received. Print out the result.
     resp.on('end', () => {
       var info = JSON.parse(data);
+      console.log(info);
       client.query("SELECT EXISTS (SELECT 1 FROM users WHERE email LIKE '%"+ info.email +"%')", (err, result) => {
         if (err) {
           return console.error("error running query", err);
@@ -281,8 +282,8 @@ app.get("/contacts/:id", (req, res, next) => {
 
 });
 
-app.get("/insert", (req, res, next) => {
-  addContact(req.body.user, req.body.email, req.body.nickname);
+app.post("/insert/:id", (req, res, next) => {
+  addContact(req.body.id, req.body.email, req.body.nickname);
   res.sendStatus(200);
 });
 
