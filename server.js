@@ -168,7 +168,7 @@ app.get("/ping/:id", (req, res, next) => {
     if (err) {
       return console.error("error inserting query", err);
     }
-    activeusers[results.rows[0].email] = {count: 0};
+    activeusers[result.rows[0].email] = {count: 0};
     res.sendStatus(200);
   });
 });
