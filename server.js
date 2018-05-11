@@ -163,6 +163,16 @@ app.get("/ping", (req, res, next) => {
   res.sendStatus(200);
 });
 
+app.get("/ping/:id", (req, res, next) => {
+  client.query("SELECT email FROM users WHERE id = "+ req.params.id, (err, result) => {
+          if (err) {
+            return console.error("error inserting query", err);
+          }
+  activeusers[results.rows[0].email] = {count: 0};
+  res.sendStatus(200);
+  });
+});
+
 app.post("/login", (req, res, next) => {
   var id = 0;
   https.get("https://www.googleapis.com/oauth2/v3/tokeninfo?id_token="+req.body.firstParam, (resp) => {
