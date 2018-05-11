@@ -20,8 +20,8 @@ client.connect((err) => {
   }
 });
 
-app.set("view engine", "jsx");
-app.engine('jsx', require('express-react-views').createEngine());
+app.set("view engine", "ejs");
+
 
 // Required to let express do POST requests with bodies
 app.use(bodyParser.urlencoded({extended: true}));
