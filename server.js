@@ -6,21 +6,21 @@ var express = require('express')(),
     mailer = require('express-mailer');
 var PORT = process.env.PORT || 5000; // default port 5000
 const bodyParser = require("body-parser");
-const {OAuth2Client} = require('google-auth-library');
-const idClient = new OAuth2Client('241417537066-elmbirp4ups9h0cjp73u70nkgur98nq4.apps.googleusercontent.com');
+
+//Pulls database_url from heroku, as their credentials change randomly we need to use their system.
 const client = new Client({
   connectionString: process.env.DATABASE_URL,
   ssl: true
 });
 
+//opens connection to database, gives error if issue.
 client.connect((err) => {
   if (err) {
     return console.error("Connection Error", err);
   }
 });
 
-app.set("view engine", "jsx");
-app.engine('jsx', require('express-react-views').createEngine());
+
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
@@ -144,7 +144,6 @@ function sendEmail(email){
   });
 };
 
-// app.use(cors());
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", '*');
     res.header("Access-Control-Allow-Credentials", true);
@@ -152,10 +151,6 @@ app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Headers", 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json');
     next();
 });
-// var corsOptions = {
-//   origin: "http://nudge-client-app.herokuapp.com",
-//   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-// }
 
 app.get("/ping", (req, res, next) => {
   console.log("Hey look we made it here");
