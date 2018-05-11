@@ -56,7 +56,7 @@ function checkInCheck() {
   for (var user in activeusers){
     activeusers[user].count += 1;
     console.log("test up", user, activeusers[user].count);
-    if (activeusers[user].count > 10){
+    if (activeusers[user].count > 9){
 
 
 
@@ -182,7 +182,6 @@ app.post("/login", (req, res, next) => {
     // The whole response has been received. Print out the result.
     resp.on('end', () => {
       var info = JSON.parse(data);
-      console.log(info);
       client.query("SELECT EXISTS (SELECT 1 FROM users WHERE email LIKE '%"+ info.email +"%')", (err, result) => {
         if (err) {
           return console.error("error running query", err);
@@ -258,7 +257,7 @@ app.get("/contacts/:id", (req, res, next) => {
       }
       namelist.push(result.rows[i].nickname);
     }
-
+    if (!idlist== ''){
     client.query("SELECT email FROM users WHERE id IN ("+ idlist +")", (err, result) => {
       if (err) {
        return console.error("error running query", err);
@@ -274,16 +273,23 @@ app.get("/contacts/:id", (req, res, next) => {
       results += " ]}"
       res.status(200).send(results);
     });
+    }else{
+      results = '{ "users" : [{ "email":"none", "nickname":"none" } ]}'
+      res.status(200).send(results);
+    }
   });
 
 });
 
 app.post("/insert/:id", (req, res, next) => {
+  console.log("req.body.email:", req.body.email);
+  console.log("req.body.nickname:", req.body.nickname);
   addContact(req.body.id, req.body.email, req.body.nickname);
+
   res.sendStatus(200);
 });
 
-app.post("/contacts/:id", (req, res, next) => {
+app.post("/contacts/key: "value", id", (req, res, next) => {
 
   https.get("https://www.googleapis.com/oauth2/v3/tokeninfo?id_token="+req.body.firstParam, (resp) => {
     let data = '';
