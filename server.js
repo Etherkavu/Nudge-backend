@@ -49,7 +49,7 @@ mailer.extend(app, {
 // For each user connected to the app, keeps counter.
 // Once counter reaches 10, it sends an automated email to the user's contact.
 // will increment counter based on myVar
-var myVar = setInterval(checkInCheck, 30000);
+var myVar = setInterval(checkInCheck, 5000);
 function checkInCheck() {
   var emails = [];
   var contactList = '';
