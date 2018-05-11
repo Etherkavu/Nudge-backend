@@ -49,7 +49,7 @@ mailer.extend(app, {
 // For each user connected to the app, keeps counter.
 // Once counter reaches 10, it sends an automated email to the user's contact.
 // will increment counter based on myVar
-var myVar = setInterval(checkInCheck, 300000);
+var myVar = setInterval(checkInCheck, 30000);
 function checkInCheck() {
   var emails = [];
   var contactList = '';
@@ -135,7 +135,7 @@ function sendEmail(email, user){
     subject: 'Notice of inactivity',
     locals: {
       title: "Notice,",
-      message: "" + user + "has has no activity, please check in on them"
+      message: "" + user + "has had no activity, please check in on them"
     }
   }, function (err) {
     if (err) {
