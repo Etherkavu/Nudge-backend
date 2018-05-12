@@ -81,9 +81,9 @@ function checkInCheck() {
           emails.push(result.rows[i].email);
         }
 
-        for (var i = 0; i < emails.length; i++){
-          sendEmail(emails[i], user);
-        }
+        // for (var i = 0; i < emails.length; i++){
+        //   sendEmail(emails[i], user);
+        // }
       });
       });
      });
@@ -118,7 +118,7 @@ var contact;
         if (err) {
           return console.error("error running query", err);
         }
-        console.log(results.rows);
+        console.log(result.rows);
         owner = result.rows[0].id;
         client.query("INSERT INTO contacts (owner_id, contact_id, nickname) VALUES (" + owner + ", " + contact + ", '" + name + "')", (err, result) => {
           if (err) {
