@@ -120,7 +120,6 @@ var contact;
         });
       });
     });
-
 }
 
 
@@ -326,11 +325,49 @@ app.post("/contacts/:id", (req, res, next) => {
   });
 });
 
-// app.get("/update", (req, res) => {
-//   updateContact(req.body.user, req.body.email, req.body.name);
-//   console.log(req.params.id, req.body.email, req.body.name);
-//   res.sendStatus(200);
-// });
+app.get("/reset", (req, res) => {
+  client.query("TRUNCATE TABLE users", (err, result) => {
+    if (err) {
+      return console.error("error running query", err);
+    }
+    client.query("TRUNCATE TABLE contacts", (err, result) => {
+    if (err) {
+      return console.error("error running query", err);
+    }
+    client.query("ALTER SEQUENCE users_id_seq RESTART WITH 1", (err, result) => {
+    if (err) {
+      return console.error("error running query", err);
+    }
+    client.query("ALTER SEQUENCE contacts_id_seq RESTART WITH 1", (err, result) => {
+    if (err) {
+      return console.error("error running query", err);
+    }
+    client.query("INSERT INTO users (first_name, last_name, email, password) VALUES ('test', 'cow', 'moo@moo.moo', 'moo')", (err, result) => {
+    if (err) {
+      return console.error("error running query", err);
+    }
+     client.query("INSERT INTO users (first_name, last_name, email, password) VALUES ('nudge.project.head@gmail.com')", (err, result) => {
+    if (err) {
+      return console.error("error running query", err);
+    }
+    client.query("INSERT INTO contacts (owner_id, contact_id, nickname) VALUES (1, 2, 'dad')", (err, result) => {
+    if (err) {
+      return console.error("error running query", err);
+    }
+    client.query("INSERT INTO contacts (owner_id, contact_id, nickname) VALUES (2, 2, 'dad')", (err, result) => {
+    if (err) {
+      return console.error("error running query", err);
+    }
+    res.sendStatus(200);
+    });
+    });
+    });
+    });
+    });
+    });
+    });
+  });
+});
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
