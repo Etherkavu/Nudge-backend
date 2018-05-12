@@ -93,8 +93,8 @@ function checkInCheck() {
   };
 }
 
-function addContact(user, add, name){
-var owner;
+function addContact(owner, add, name){
+
 var contact;
   client.query("SELECT EXISTS (SELECT 1 FROM users WHERE email LIKE '%"+ add +"%')", (err, result) => {
     if (err) {
@@ -113,13 +113,6 @@ var contact;
       }
       contact = result.rows[0].id;
       console.log("contact",contact);
-
-      client.query("SELECT id FROM users WHERE email LIKE '%" + user + "%'", (err, result) => {
-        if (err) {
-          return console.error("error running query", err);
-        }
-        console.log(result.rows);
-        owner = result.rows[0].id;
         client.query("INSERT INTO contacts (owner_id, contact_id, nickname) VALUES (" + owner + ", " + contact + ", '" + name + "')", (err, result) => {
           if (err) {
             return console.error("error inserting query", err);
@@ -127,7 +120,7 @@ var contact;
         });
       });
     });
-  });
+
 }
 
 
