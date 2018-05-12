@@ -325,7 +325,7 @@ app.post("/contacts/:id", (req, res, next) => {
   });
 });
 
-app.post("/delete/:id", (req, res) => {
+app.post("/delete/:id", (req, res, next) => {
   console.log(req.body);
   client.query("SELECT id FROM users WHERE email = "+req.params.email, (err, result) => {
     if (err) {
