@@ -340,7 +340,7 @@ app.post("/delete/:id", (req, res) => {
       res.sendStatus(200);
     });
   });
-}
+});
 
 app.get("/reset", (req, res) => {
   client.query("TRUNCATE TABLE users", (err, result) => {
