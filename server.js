@@ -82,7 +82,7 @@ function checkInCheck() {
                   sendEmail(emails[i], user);
                 }
               }else{
-                console.log(Emailer turned off, no Email sent.)
+                console.log("Emailer turned off, no Email sent.");
               }
             });
           }
