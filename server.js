@@ -67,7 +67,7 @@ function checkInCheck() {
       if (err) {
         return console.error("error running query", err);
       }
-
+      if(result.rows[0].contact_id){
       contactList += result.rows[0].contact_id;
       for (var i = 1; i < result.rows.length; i++){
         contactList += ", " + (result.rows[i].contact_id);
@@ -85,6 +85,7 @@ function checkInCheck() {
         //   sendEmail(emails[i], user);
         // }
       });
+       }
       });
      });
 
