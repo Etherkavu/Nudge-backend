@@ -327,6 +327,7 @@ app.post("/contacts/:id", (req, res, next) => {
 
 app.post("/delete/:id", (req, res, next) => {
   console.log(req.body);
+  console.log(req.body.email);
   client.query("SELECT id FROM users WHERE email = '"+req.body.email+"'", (err, result) => {
     if (err) {
       return console.error("error running query", err);
