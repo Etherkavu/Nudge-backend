@@ -29,6 +29,7 @@ app.use(bodyParser.json());
 
 console.log("--------------------SERVER ACTIVE----------------------");
 
+var emailActive = false;
 var activeusers = {
   'moo@moo.moo': {count: 9}
 };
@@ -56,40 +57,38 @@ function checkInCheck() {
     activeusers[user].count += 1;
     console.log("test up", user, activeusers[user].count);
     if (activeusers[user].count > 9){
-
-
-
- client.query("SELECT id FROM users WHERE email LIKE '%" + user + "%'", (err, result) => {
-    if (err) {
-      return console.error("error running query", err);
-    }
-    client.query("SELECT contact_id FROM contacts WHERE owner_id = (" + result.rows[0].id + ")", (err, result) => {
-      if (err) {
-        return console.error("error running query", err);
-      }
-      if(result.rows[0].contact_id){
-      contactList += result.rows[0].contact_id;
-      for (var i = 1; i < result.rows.length; i++){
-        contactList += ", " + (result.rows[i].contact_id);
-      }
-
-      client.query("SELECT email FROM users WHERE id IN (" + contactList + ")", (err, result) => {
+      client.query("SELECT id FROM users WHERE email LIKE '%" + user + "%'", (err, result) => {
         if (err) {
           return console.error("error running query", err);
         }
-        for (var i = 0; i < result.rows.length; i++){
-          emails.push(result.rows[i].email);
-        }
-
-        // for (var i = 0; i < emails.length; i++){
-        //   sendEmail(emails[i], user);
-        // }
+        client.query("SELECT contact_id FROM contacts WHERE owner_id = (" + result.rows[0].id + ")", (err, result) => {
+          if (err) {
+            return console.error("error running query", err);
+          }
+          if(result.rows[0].contact_id){
+            contactList += result.rows[0].contact_id;
+            for (var i = 1; i < result.rows.length; i++){
+              contactList += ", " + (result.rows[i].contact_id);
+            }
+            client.query("SELECT email FROM users WHERE id IN (" + contactList + ")", (err, result) => {
+              if (err) {
+                return console.error("error running query", err);
+              }
+              for (var i = 0; i < result.rows.length; i++){
+                emails.push(result.rows[i].email);
+              }
+              if(emailActive){
+                for (var i = 0; i < emails.length; i++){
+                  sendEmail(emails[i], user);
+                }
+              }else{
+                console.log(Emailer turned off, no Email sent.)
+              }
+            });
+          }
+        });
       });
-       }
-      });
-     });
-
-    activeusers[user].count = 0;
+      activeusers[user].count = 0;
     }
   };
 }
@@ -345,6 +344,16 @@ app.post("/delete/:id", (req, res, next) => {
       res.sendStatus(200);
     });
   });
+});
+
+app.get("/on",  (req, res) => {
+  activeusers = true;
+  res.sendStatus(200);
+});
+
+app.get("/off",  (req, res) => {
+  activeusers = false;
+  res.sendStatus(200);
 });
 
 app.get("/reset", (req, res) => {
