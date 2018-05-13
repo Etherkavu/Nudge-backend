@@ -327,14 +327,14 @@ app.post("/contacts/:id", (req, res, next) => {
 
 app.post("/delete/:id", (req, res, next) => {
   console.log(req.body);
-  client.query("SELECT id FROM users WHERE email = "+req.params.email, (err, result) => {
+  client.query("SELECT id FROM users WHERE email = "+req.body.email, (err, result) => {
     if (err) {
       return console.error("error running query", err);
     }
-    console.log("1",req.body.id);
+    console.log("1",req.params.id);
     console.log("2",results.row[0].id);
     console.log("3",req.body.nickname);
-    client.query("DELETE FROM contacts WHERE owner_id = "+req.body.id+" AND contact_id = "+results.row[0].id+" AND nickname = "+req.params.nickname, (err, result) => {
+    client.query("DELETE FROM contacts WHERE owner_id = "+req.params.id+" AND contact_id = "+results.row[0].id+" AND nickname = "+req.body.nickname, (err, result) => {
       if (err) {
         return console.error("error running query", err);
       }
