@@ -259,9 +259,9 @@ app.get("/contacts/:id", (req, res, next) => {
       results += '{ "users" : ['
       for (var i = 0; i < result.rows.length; i ++){
         if(i===0){
-          results += '{ "email":"' + result.rows[0].email + '", "nickname":"' + namelist[i] + '" }'
+          results += '{ "email":"' + result.rows[i].email + '", "nickname":"' + namelist[i] + '" }'
         }else{
-          results += ', { "email":"' + result.rows[0].email + '", "nickname": "' + namelist[i] + '" }'
+          results += ', { "email":"' + result.rows[i].email + '", "nickname": "' + namelist[i] + '" }'
         }
       }
       results += " ]}"
@@ -327,7 +327,7 @@ app.post("/contacts/:id", (req, res, next) => {
 
 app.post("/delete/:id", (req, res, next) => {
   console.log(req.body);
-  client.query("SELECT id FROM users WHERE email = "+req.body.email, (err, result) => {
+  client.query("SELECT id FROM users WHERE email = '"+req.body.email+"'", (err, result) => {
     if (err) {
       return console.error("error running query", err);
     }
