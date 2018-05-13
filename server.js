@@ -333,9 +333,9 @@ app.post("/delete/:id", (req, res, next) => {
       return console.error("error running query", err);
     }
     console.log("1",req.params.id);
-    console.log("2",results.row[0].id);
+    console.log("2",result.row[0].id);
     console.log("3",req.body.nickname);
-    client.query("DELETE FROM contacts WHERE owner_id = "+req.params.id+" AND contact_id = "+results.row[0].id+" AND nickname = "+req.body.nickname, (err, result) => {
+    client.query("DELETE FROM contacts WHERE owner_id = "+req.params.id+" AND contact_id = "+results.row[0].id+" AND nickname = '"+req.body.nickname"'", (err, result) => {
       if (err) {
         return console.error("error running query", err);
       }
