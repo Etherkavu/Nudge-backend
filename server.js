@@ -273,8 +273,10 @@ app.get("/contacts/:id", (req, res, next) => {
       if (err) {
         return console.error("error inserting query", err);
       }
-      email = result.rows[0].email;
-      delete activeusers[email];
+      if(result.rows[0].email){
+        email = result.rows[0].email;
+        delete activeusers[email];
+      }
       res.status(200).send(results);
       });
     }
