@@ -122,7 +122,6 @@ var contact;
     });
 }
 
-
 function sendEmail(email, user){
   app.mailer.send('email', {
     to: email, // REQUIRED. This can be a comma delimited string just like a normal email to field.
