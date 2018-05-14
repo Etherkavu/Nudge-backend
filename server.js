@@ -349,21 +349,14 @@ app.post("/activate/:id", (req, res) => {
 });
 
 app.post("/deactivate/:id", (req, res, next) => {
-  console.log(req.body);
-  console.log(req.body.email);
-  client.query("SELECT id FROM users WHERE email = '"+req.body.email+"'", (err, result) => {
+ client.query("SELECT email FROM users WHERE id = " + req.params.id, (err, result) => {
     if (err) {
-      return console.error("error running query", err);
+      return console.error("error inserting query", err);
     }
-    console.log("1",req.params.id);
-    console.log("2",result.rows[0].id);
-    console.log("3",req.body.nickname);
-    client.query("DELETE FROM contacts WHERE owner_id = "+req.params.id+" AND contact_id = "+result.rows[0].id+" AND nickname = '"+req.body.nickname+"'", (err, result) => {
-      if (err) {
-        return console.error("error running query", err);
-      }
-      res.sendStatus(200);
-    });
+    email = result.rows[0].email;
+    console.log("user ",email,"removed from active users");
+    delete activeusers[email];
+    res.sendStatus(200);
   });
 });
 
