@@ -138,6 +138,7 @@ function sendEmail(email, user){
    });
  };
 
+//Disables CORS
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", '*');
     res.header("Access-Control-Allow-Credentials", true);
@@ -146,12 +147,14 @@ app.use(function(req, res, next) {
     next();
 });
 
+//Testing route, does nothing of usefulness to real user
 app.get("/ping", (req, res, next) => {
   console.log("Hey look we made it here");
   activeusers['moo@moo.moo'] = {count: 0};
   res.sendStatus(200);
 });
 
+//User checks in, reseting counter
 app.get("/ping/:id", (req, res, next) => {
   client.query("SELECT email FROM users WHERE id = "+ req.params.id, (err, result) => {
     if (err) {
@@ -162,6 +165,9 @@ app.get("/ping/:id", (req, res, next) => {
   });
 });
 
+//does google auth to create user after they have logged in.
+//once new user exists, or if they logged in with existing user will send back their ID
+// ID is currently being used as session token
 app.post("/login", (req, res, next) => {
   var id = 0;
   https.get("https://www.googleapis.com/oauth2/v3/tokeninfo?id_token="+req.body.firstParam, (resp) => {
@@ -219,6 +225,7 @@ app.post("/login", (req, res, next) => {
   });
 });
 
+//removes user from active user list
 app.get("/logout/:id", (req, res, next) => {
   client.query("SELECT email FROM users WHERE id = " + req.params.id, (err, result) => {
     if (err) {
@@ -231,6 +238,7 @@ app.get("/logout/:id", (req, res, next) => {
   });
 });
 
+//Pulls all contacts associated
 app.get("/contacts/:id", (req, res, next) => {
 
   var id = req.params.id;
@@ -283,6 +291,7 @@ app.get("/contacts/:id", (req, res, next) => {
 
 });
 
+//Adds contact tied to the active user to the contact database
 app.post("/insert/:id", (req, res, next) => {
   console.log("req.body:", req.body);
   console.log("req.body.email:", req.body.email);
@@ -300,6 +309,7 @@ app.post("/insert/:id", (req, res, next) => {
   });
 
 });
+
 
 app.post("/contacts/:id", (req, res, next) => {
 
@@ -326,17 +336,18 @@ app.post("/contacts/:id", (req, res, next) => {
   });
 });
 
+//Used as controllers to turn off and on the emailer, to prevent spam during testing
 app.get("/on",  (req, res) => {
   activeusers = true;
   res.sendStatus(200);
 });
-
 app.get("/off",  (req, res) => {
   activeusers = false;
   res.sendStatus(200);
 });
 
-app.post("/activate/:id", (req, res) => {
+//Adds user to active user list to be monitored
+app.get("/activate/:id", (req, res) => {
   client.query("SELECT email FROM users WHERE id = "+req.params.id, (err, result) => {
     if (err) {
       return console.error("error inserting query", err);
@@ -348,7 +359,8 @@ app.post("/activate/:id", (req, res) => {
   });
 });
 
-app.post("/deactivate/:id", (req, res, next) => {
+//removes user from active user list
+app.post("`/deactivate/:id", (req, res, next) => {
  client.query("SELECT email FROM users WHERE id = " + req.params.id, (err, result) => {
     if (err) {
       return console.error("error inserting query", err);
@@ -360,6 +372,7 @@ app.post("/deactivate/:id", (req, res, next) => {
   });
 });
 
+//Removes a contact from the contact database
 app.post("/delete/:id", (req, res, next) => {
   console.log(req.body);
   console.log(req.body.email);
@@ -379,6 +392,7 @@ app.post("/delete/:id", (req, res, next) => {
   });
 });
 
+//Used for developing, hard resets the database
 app.get("/reset", (req, res) => {
   client.query("TRUNCATE TABLE users", (err, result) => {
     if (err) {
