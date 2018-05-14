@@ -345,6 +345,7 @@ app.post("/activate/:id", (req, res) => {
   activeusers[result.rows[0].email] = {count: 0};
   console.log("ACTIVE USERS: ", activeusers);
   res.sendStatus(200);
+  });
 });
 
 app.post("/deactivate/:id", (req, res, next) => {
