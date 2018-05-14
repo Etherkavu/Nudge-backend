@@ -338,11 +338,11 @@ app.post("/contacts/:id", (req, res, next) => {
 
 //Used as controllers to turn off and on the emailer, to prevent spam during testing
 app.get("/on",  (req, res) => {
-  activeusers = true;
+  emailActive = true;
   res.sendStatus(200);
 });
 app.get("/off",  (req, res) => {
-  activeusers = false;
+  emailActive = false;
   res.sendStatus(200);
 });
 
@@ -398,41 +398,41 @@ app.get("/reset", (req, res) => {
     if (err) {
       return console.error("error running query", err);
     }
-    client.query("TRUNCATE TABLE contacts", (err, result) => {
-    if (err) {
-      return console.error("error running query", err);
-    }
-    client.query("ALTER SEQUENCE users_id_seq RESTART WITH 1", (err, result) => {
-    if (err) {
-      return console.error("error running query", err);
-    }
-    client.query("ALTER SEQUENCE contacts_id_seq RESTART WITH 1", (err, result) => {
-    if (err) {
-      return console.error("error running query", err);
-    }
-    client.query("INSERT INTO users (first_name, last_name, email, password) VALUES ('test', 'cow', 'moo@moo.moo', 'moo')", (err, result) => {
-    if (err) {
-      return console.error("error running query", err);
-    }
-     client.query("INSERT INTO users (email) VALUES ('nudge.project.head@gmail.com')", (err, result) => {
-    if (err) {
-      return console.error("error running query", err);
-    }
-    client.query("INSERT INTO contacts (owner_id, contact_id, nickname) VALUES (1, 2, 'dad')", (err, result) => {
-    if (err) {
-      return console.error("error running query", err);
-    }
-    client.query("INSERT INTO contacts (owner_id, contact_id, nickname) VALUES (2, 2, 'dad')", (err, result) => {
-    if (err) {
-      return console.error("error running query", err);
-    }
-    res.sendStatus(200);
-    });
-    });
-    });
-    });
-    });
-    });
+      client.query("TRUNCATE TABLE contacts", (err, result) => {
+      if (err) {
+        return console.error("error running query", err);
+      }
+        client.query("ALTER SEQUENCE users_id_seq RESTART WITH 1", (err, result) => {
+        if (err) {
+          return console.error("error running query", err);
+        }
+          client.query("ALTER SEQUENCE contacts_id_seq RESTART WITH 1", (err, result) => {
+          if (err) {
+            return console.error("error running query", err);
+          }
+            client.query("INSERT INTO users (first_name, last_name, email, password) VALUES ('test', 'cow', 'moo@moo.moo', 'moo')", (err, result) => {
+            if (err) {
+              return console.error("error running query", err);
+            }
+              client.query("INSERT INTO users (email) VALUES ('nudge.project.head@gmail.com')", (err, result) => {
+              if (err) {
+                return console.error("error running query", err);
+              }
+              client.query("INSERT INTO contacts (owner_id, contact_id, nickname) VALUES (1, 2, 'dad')", (err, result) => {
+              if (err) {
+                return console.error("error running query", err);
+                }
+                client.query("INSERT INTO contacts (owner_id, contact_id, nickname) VALUES (2, 2, 'dad')", (err, result) => {
+                if (err) {
+                  return console.error("error running query", err);
+                }
+                res.sendStatus(200);
+                });
+              });
+            });
+          });
+        });
+      });
     });
   });
 });
