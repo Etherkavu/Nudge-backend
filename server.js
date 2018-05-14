@@ -360,7 +360,7 @@ app.get("/activate/:id", (req, res) => {
 });
 
 //removes user from active user list
-app.post("/deactivate/:id", (req, res, next) => {
+app.get("/deactivate/:id", (req, res, next) => {
  client.query("SELECT email FROM users WHERE id = " + req.params.id, (err, result) => {
     if (err) {
       return console.error("error inserting query", err);
