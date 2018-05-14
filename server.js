@@ -65,7 +65,7 @@ function checkInCheck() {
           if (err) {
             return console.error("error running query", err);
           }
-          if(result.rows[0].contact_id){
+          if(result.rows[0]){
             contactList += result.rows[0].contact_id;
             for (var i = 1; i < result.rows.length; i++){
               contactList += ", " + (result.rows[i].contact_id);
@@ -327,7 +327,28 @@ app.post("/contacts/:id", (req, res, next) => {
   });
 });
 
-app.post("/delete/:id", (req, res, next) => {
+app.get("/on",  (req, res) => {
+  activeusers = true;
+  res.sendStatus(200);
+});
+
+app.get("/off",  (req, res) => {
+  activeusers = false;
+  res.sendStatus(200);
+});
+
+app.post("/activate/:id", (req, res) => {
+  client.query("SELECT email FROM users WHERE id = "+req.params.id, (err, result) => {
+    if (err) {
+      return console.error("error inserting query", err);
+    }
+    console.log(result.rows);
+  activeusers[result.rows[0].email] = {count: 0};
+  console.log("ACTIVE USERS: ", activeusers);
+  res.sendStatus(200);
+});
+
+app.post("/deactivate/:id", (req, res, next) => {
   console.log(req.body);
   console.log(req.body.email);
   client.query("SELECT id FROM users WHERE email = '"+req.body.email+"'", (err, result) => {
@@ -344,16 +365,6 @@ app.post("/delete/:id", (req, res, next) => {
       res.sendStatus(200);
     });
   });
-});
-
-app.get("/on",  (req, res) => {
-  activeusers = true;
-  res.sendStatus(200);
-});
-
-app.get("/off",  (req, res) => {
-  activeusers = false;
-  res.sendStatus(200);
 });
 
 app.get("/reset", (req, res) => {
