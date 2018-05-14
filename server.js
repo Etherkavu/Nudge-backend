@@ -367,6 +367,25 @@ app.post("/deactivate/:id", (req, res, next) => {
   });
 });
 
+app.post("/delete/:id", (req, res, next) => {
+  console.log(req.body);
+  console.log(req.body.email);
+  client.query("SELECT id FROM users WHERE email = '"+req.body.email+"'", (err, result) => {
+    if (err) {
+      return console.error("error running query", err);
+    }
+    console.log("1",req.params.id);
+    console.log("2",result.rows[0].id);
+    console.log("3",req.body.nickname);
+    client.query("DELETE FROM contacts WHERE owner_id = "+req.params.id+" AND contact_id = "+result.rows[0].id+" AND nickname = '"+req.body.nickname+"'", (err, result) => {
+      if (err) {
+        return console.error("error running query", err);
+      }
+      res.sendStatus(200);
+    });
+  });
+});
+
 app.get("/reset", (req, res) => {
   client.query("TRUNCATE TABLE users", (err, result) => {
     if (err) {
