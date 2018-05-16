@@ -410,7 +410,7 @@ app.get("/reset", (req, res) => {
           if (err) {
             return console.error("error running query", err);
           }
-            client.query("INSERT INTO users (first_name, last_name, email, password) VALUES ('nudge', 'admin', 'nudge.project.head@gmail.com')", (err, result) => {
+            client.query("INSERT INTO users (first_name, last_name, email) VALUES ('nudge', 'admin', 'nudge.project.head@gmail.com')", (err, result) => {
             if (err) {
               return console.error("error running query", err);
             }
