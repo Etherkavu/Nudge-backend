@@ -54,7 +54,7 @@ function checkInCheck() {
   var contactList = '';
   for (var user in activeusers){
     activeusers[user].count += 1;
-    console.log("test up", user, activeusers[user].count);
+    console.log("No notice from", user, activeusers[user].count);
     if (activeusers[user].count > 9){
       client.query("SELECT id FROM users WHERE email LIKE '%" + user + "%'", (err, result) => {
         if (err) {
@@ -155,6 +155,7 @@ app.get("/ping", (req, res, next) => {
 
 //User checks in, reseting counter
 app.get("/ping/:id", (req, res, next) => {
+  if(req.params.id){
   client.query("SELECT email FROM users WHERE id = "+ req.params.id, (err, result) => {
     if (err) {
       return console.error("error inserting query", err);
@@ -162,6 +163,7 @@ app.get("/ping/:id", (req, res, next) => {
     activeusers[result.rows[0].email] = {count: 0};
     res.sendStatus(200);
   });
+  }
 });
 
 //does google auth to create user after they have logged in.
