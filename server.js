@@ -31,7 +31,6 @@ console.log("--------------------SERVER ACTIVE----------------------");
 
 var emailActive = false;
 var activeusers = {
-  'moo@moo.moo': {count: 9}
 };
 
 mailer.extend(app, {
