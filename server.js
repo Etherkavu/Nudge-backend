@@ -410,29 +410,21 @@ app.get("/reset", (req, res) => {
           if (err) {
             return console.error("error running query", err);
           }
-            client.query("INSERT INTO users (first_name, last_name, email, password) VALUES ('test', 'cow', 'moo@moo.moo', 'moo')", (err, result) => {
+            client.query("INSERT INTO users (first_name, last_name, email, password) VALUES ('nudge', 'admin', 'nudge.project.head@gmail.com')", (err, result) => {
             if (err) {
               return console.error("error running query", err);
             }
-              client.query("INSERT INTO users (email) VALUES ('nudge.project.head@gmail.com')", (err, result) => {
-              if (err) {
-                return console.error("error running query", err);
-              }
-              client.query("INSERT INTO contacts (owner_id, contact_id, nickname) VALUES (1, 2, 'dad')", (err, result) => {
+
+            client.query("INSERT INTO contacts (owner_id, contact_id, nickname) VALUES (1, 1, 'self')", (err, result) => {
               if (err) {
                 return console.error("error running query", err);
                 }
-                client.query("INSERT INTO contacts (owner_id, contact_id, nickname) VALUES (2, 2, 'dad')", (err, result) => {
-                if (err) {
-                  return console.error("error running query", err);
-                }
+
                 res.sendStatus(200);
                 });
               });
             });
-          });
-        });
-      });
+       });
     });
   });
 });
