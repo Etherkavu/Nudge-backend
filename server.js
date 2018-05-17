@@ -55,7 +55,7 @@ function checkInCheck() {
   for (var user in activeusers){
     activeusers[user].count += 1;
     console.log("No notice from", user, activeusers[user].count);
-    if (activeusers[user].count > 9){
+    if (activeusers[user].count > 4){
       client.query("SELECT id FROM users WHERE email LIKE '%" + user + "%'", (err, result) => {
         if (err) {
           return console.error("error running query", err);
