@@ -22,8 +22,6 @@ Launch web server and database server onto online hosting, routes will be needin
 1. Google authorization
 2. accelorometer access: monitors phone movement not its activity creating invasion free app and monitoring.
 
-## SCREENSHOTS
-
 ## DEPENDENCIES
 
 ### Mobile APP:
@@ -54,3 +52,13 @@ Launch web server and database server onto online hosting, routes will be needin
 - pg-promise
 - react
 - react-dom
+
+## SCREENSHOTS
+
+!["Screenshot of Webpage"](https://github.com/Etherkavu/Nudge-backend/blob/master/Docs/Screen%20Shot%202018-05-18%20at%2010.02.48%20AM.png?raw=true)
+
+!["Screenshot of Webpage"](https://github.com/Etherkavu/Nudge-backend/blob/master/Docs/Screen%20Shot%202018-05-18%20at%2010.04.21%20AM.png?raw=true)
+
+!["Screenshot of App"](https://github.com/Etherkavu/Nudge-backend/blob/master/Docs/Screen%20Shot%202018-05-18%20at%2012.13.21%20PM.png?raw=true)
+
+!["Screenshot of App"](https://github.com/Etherkavu/Nudge-backend/blob/master/Docs/Screen%20Shot%202018-05-18%20at%2012.13.51%20PM.png?raw=true)
