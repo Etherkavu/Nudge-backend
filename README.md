@@ -28,13 +28,6 @@ Launch web server and database server onto online hosting, routes will be needin
 
 - Node 5.10.x or above
 - NPM 3.8.x or above
--
-
-### Web APP:
-
--
--
--
 
 ### Database server:
 
